@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+button {
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+/*Add Venue*/
+.addVenueForm {
+  background: grey;
+  height: 200px;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
