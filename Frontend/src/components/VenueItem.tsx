@@ -7,7 +7,7 @@ const VenueItem = (props: VenueItemProps) => {
     return (
         <li>
           <h4>{props.venueName}</h4>
-          <button>Open Venue Details</button>
+          <button className='btn btn-primary' type='button' >Open Venue Details</button>
         </li>
     )
 }

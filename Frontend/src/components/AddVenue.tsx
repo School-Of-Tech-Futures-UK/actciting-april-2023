@@ -6,7 +6,7 @@ export interface AddVenueProps {
 const AddVenue = (props: AddVenueProps) => {
     return (
         <div>
-            <button onClick={props.handleAddVenueClick}>Add Venue</button>
+            <button className='btn btn-primary' type='button' onClick={props.handleAddVenueClick}>Add Venue</button>
 
             <div className={`addVenueForm ${props.newVenueDivState}`}>
                 <input type="text"></input>

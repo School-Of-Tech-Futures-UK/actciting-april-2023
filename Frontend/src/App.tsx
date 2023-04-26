@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
+import './styles.css';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import ActCitingRoutes from './components/ActCitingRoutes';
+
 
 function App() {
   return (
