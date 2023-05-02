@@ -16,8 +16,8 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000,
 })
 
-export const getTeachers = async (request: Request, response: Response) => {
-  console.log('getTeachers')
+export const getVenues = async (request: Request, response: Response) => {
+  console.log('getVenues')
 
   try {
     const results = await pool.query(
@@ -25,78 +25,78 @@ export const getTeachers = async (request: Request, response: Response) => {
     )
     response.status(200).json(results.rows)
   } catch (error) {
-    console.log('Error thrown in getTeachers: ', (error as Error).message)
+    console.log('Error thrown in getVenues: ', (error as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
 }
 
-export const getTeacherById = async (request: Request, response: Response) => {
-  const teacher_id = parseInt(request.params.id)
-  console.log(`getTeacherById: teacher_id=${teacher_id}`)
+export const getVenueById = async (request: Request, response: Response) => {
+  const Venue_id = parseInt(request.params.id)
+  console.log(`getVenueById: venue_id=${Venue_id}`)
 
   try {
     const results = await pool.query(
-      'SELECT * FROM teacher WHERE teacher_id = $1;',
-      [teacher_id]
+      'SELECT * FROM venues WHERE venue_id = $1;',
+      [Venue_id]
     )
     response.status(200).json(results.rows)
   } catch (error) {
-    console.log('Error thrown in getTeacherById: ', (error as Error).message)
+    console.log('Error thrown in getVenueById: ', (error as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
 }
 
-export const createTeacher = async (request: Request, response: Response) => {
-  const { first_name, surname } = request.body
-  console.log(`createTeacher: first_name=${first_name}, surname=${surname}`)
+export const createVenue = async (request: Request, response: Response) => {
+  const { name, capacity, address, geolocation, image, email, start_date, end_date } = request.body
+  console.log(`createVenue: name=${name}, capacity=${capacity}, address=${address}, geolocation=${geolocation}, image=${image}, email=${email}, start_date=${start_date}, end_date=${end_date}`)
 
   try {
     const results = await pool.query(
-      'INSERT INTO teacher (first_name, surname) VALUES ($1, $2) RETURNING teacher_id;',
-      [first_name, surname]
+      'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date) VALUES ($1-$8) RETURNING venue_id;',
+      [name, capacity, address, geolocation, image, email, start_date, end_date ]
     )
-    const message = `createTeacher: Teacher added with ID: ${results.rows[0].teacher_id}`
+    const message = `createVenue: Venue added with ID: ${results.rows[0].venue_id}`
     console.log(message)
     response.status(201).send(message)
   } catch (error) {
-    console.log('Error thrown in createTeacher: ', (error as Error).message)
+    console.log('Error thrown in createVenue: ', (error as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
 }
 
-export const updateTeacher = async (request: Request, response: Response) => {
-  const teacher_id = parseInt(request.params.id)
+export const updateVenue = async (request: Request, response: Response) => {
+  const Venue_id = parseInt(request.params.id)
   const { first_name, surname } = request.body
-  console.log(`updateTeacher: teacher_id=${teacher_id}`)
+  console.log(`updateVenue: Venue_id=${Venue_id}`)
 
   try {
     const results = await pool.query(
-      'UPDATE teacher SET first_name = $1, surname = $2 WHERE teacher_id = $3;',
-      [first_name, surname, teacher_id]
+      'UPDATE Venue SET first_name = $1, surname = $2 WHERE Venue_id = $3;',
+      [first_name, surname, Venue_id]
     )
-    const message = `updateTeacher: modified with ID: ${teacher_id}`
+    const message = `updateVenue: modified with ID: ${Venue_id}`
     console.log(message)
     response.status(200).send(message)
   } catch (error) {
-    console.log('Error thrown in updateTeacher: ', (error as Error).message)
+    console.log('Error thrown in updateVenue: ', (error as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
 }
 
-export const deleteTeacher = async (request: Request, response: Response) => {
-  const teacher_id = parseInt(request.params.id)
-  console.log(`deleteTeacher: teacher_id=${teacher_id}`)
+export const deleteVenue = async (request: Request, response: Response) => {
+  const Venue_id = parseInt(request.params.id)
+  console.log(`deleteVenue: Venue_id=${Venue_id}`)
 
   try {
     const results = await pool.query(
-      'DELETE FROM teacher WHERE teacher_id = $1;',
-      [teacher_id]
+      'DELETE FROM Venue WHERE Venue_id = $1;',
+      [Venue_id]
     )
-    const message = `deleteTeacher: Teacher deleted with ID: ${teacher_id}`
+    const message = `deleteVenue: Venue deleted with ID: ${Venue_id}`
     console.log(message)
     response.status(200).send(message)
   } catch (error) {
-    console.log('Error thrown in deleteTeacher: ', (error as Error).message)
+    console.log('Error thrown in deleteVenue: ', (error as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
 }

@@ -12,10 +12,10 @@ API_PORT=3000
 echo ""
 echo "Waiting for postgres at ${DB_SERVER} ${DB_PORT}..."
 wait_time=1
-while ! nc -z ${DB_SERVER} ${DB_PORT}; do
-   sleep ${wait_time}
-   echo "Waiting ${wait_time} more secs for for postgres."
-done
+# while ! nc -z ${DB_SERVER} ${DB_PORT}; do
+#    sleep ${wait_time}
+#    echo "Waiting ${wait_time} more secs for for postgres."
+# done
 sleep ${wait_time}
 echo "...postgres ready at ${DB_SERVER} ${DB_PORT}."
 echo ""
@@ -23,10 +23,10 @@ echo ""
 echo ""
 echo "Waiting for api at ${API_SERVER} ${API_PORT}..."
 wait_time=1
-while ! nc -z ${API_SERVER} ${API_PORT}; do
-   sleep ${wait_time}
-   echo "Waiting ${wait_time} more secs for for api."
-done
+# while ! nc -z ${API_SERVER} ${API_PORT}; do
+#    sleep ${wait_time}
+#    echo "Waiting ${wait_time} more secs for for api."
+# done
 sleep ${wait_time}
 echo "...api ready at ${API_SERVER} ${API_PORT}."
 echo ""
@@ -40,48 +40,48 @@ curl -X GET http://localhost:3000/
 echo ""
 
 echo ""
-echo "--get current teachers--"
-curl -X GET http://localhost:3000/teachers
+echo "--get current venues--"
+curl -X GET http://localhost:3000/venues
 echo ""
 
 echo ""
-echo "--get current teacher 1--"
-curl -X GET http://localhost:3000/teachers/1
+echo "--get current venue 1--"
+curl -X GET http://localhost:3000/venue/1
 echo ""
 
 echo ""
-echo "--get current teacher 2--"
-curl -X GET http://localhost:3000/teachers/2
+echo "--get current venue 2--"
+curl -X GET http://localhost:3000/venue/2
 echo ""
 
 echo ""
-echo "--add teacher--"
-curl -X POST --data "first_name=Michael&surname=Woodhead" http://localhost:3000/teachers
+echo "--add venue--"
+curl -X POST --data "name=ABCD&capacity=2&address=123fakestreet&geoloaction=51.50325308011004, 0.0031158253165805914&image=123abc&email=fake@gmail.com&start_date=31122022&end_date=31122023" http://localhost:3000/venues
 echo ""
 
 echo ""
-echo "--get current teachers again--"
-curl -X GET http://localhost:3000/teachers
+echo "--get current venues again--"
+curl -X GET http://localhost:3000/venues
 echo ""
 
 echo ""
-echo "--update teacher 3--"
-curl -X PUT -d "first_name=Michael" -d "surname=The-Boss"  http://localhost:3000/teachers/3
+echo "--update venue 3--"
+curl -X PUT -d "capacity=3"   http://localhost:3000/venue/3
 echo ""
 
 echo ""
-echo "--get current teachers again--"
-curl -X GET http://localhost:3000/teachers
+echo "--get current venues again--"
+curl -X GET http://localhost:3000/venues
 echo ""
 
 echo ""
-echo "--delete teacher 3--"
-curl -X DELETE http://localhost:3000/teachers/3
+echo "--delete venue 3--"
+curl -X DELETE http://localhost:3000/venue/3
 echo ""
 
 echo ""
-echo "--get current teachers again--"
-curl -X GET http://localhost:3000/teachers
+echo "--get current venues again--"
+curl -X GET http://localhost:3000/venues
 echo ""
 
 echo ""

@@ -17,11 +17,11 @@ app.get('/', (request, response) => {
 })
 
 // API urls code here
-app.get('/teachers', dbHelper.getTeachers)
-app.get('/teachers/:id', dbHelper.getTeacherById)
-app.post('/teachers', dbHelper.createTeacher)
-app.put('/teachers/:id', dbHelper.updateTeacher)
-app.delete('/teachers/:id', dbHelper.deleteTeacher)
+app.get('/venues', dbHelper.getVenues)
+app.get('/venue/:id', dbHelper.getVenueById)
+app.post('/venues', dbHelper.createVenue)
+app.put('/venue/:id', dbHelper.updateVenue)
+app.delete('/venue/:id', dbHelper.deleteVenue)
 
 // Activate!
 app.listen(port, () => {
