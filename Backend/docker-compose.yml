@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  postgres:
+    image: my-postgres:latest
+    container_name: my-postgres
+    build:
+      context: ./db-scripts
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+
+  api-app:
+    image: my-api-app:latest
+    container_name: my-api-app
+    depends_on:
+      - postgres
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - POSTGRES_DB=my-postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer_container
+    ports:
+      - 8080:8080
