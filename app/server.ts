@@ -1,6 +1,7 @@
 // Express app
 import express from 'express'
 import * as dbHelper from './database-helper'
+import cors from 'cors'
 const app = express()
 const port = 3000
 
@@ -10,6 +11,9 @@ process.title = 'MyExpressApp'
 // This lets us handle JSON directly
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+// Use Cors
+app.use(cors())
 
 // Hello-world type root url
 app.get('/', (request, response) => {

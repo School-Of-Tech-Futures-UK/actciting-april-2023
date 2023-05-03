@@ -1,29 +1,29 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import AddVenue from "../components/AddVenue"
 import VenueList from "../components/VenueList"
 
 const VenuePage = () => {
 
-    const [currentVenues, setVenues] = useState(
-        [{
-            id: 1,
-            venueName: 'The 02 Arena',
-        },
-        {
-            id: 2,
-            venueName: 'Wembley',
-        },
-        {
-            id: 3,
-            venueName: 'MGM Las Vegas',
-        }]
-    )
+    const [currentVenues, setVenues] = useState([])
     
     const [newVenueDivDisplay, setNewVenueDivDisplay] = useState('hide')
 
     const addVenueClickHandler = () => {
         newVenueDivDisplay === 'hide'? setNewVenueDivDisplay('show') : setNewVenueDivDisplay('hide')
     }
+
+    const fetchVenues = async () => {
+        const results = await fetch('http://localhost:3000/venues')
+        const data = await results.json()
+
+        return data
+    }
+
+    useEffect(() => {
+        fetchVenues().then(setVenues)
+        console.log(currentVenues)
+    }, [])
+
 
     return (
         <>

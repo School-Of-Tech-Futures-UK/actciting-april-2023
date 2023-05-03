@@ -1,13 +1,25 @@
 export type VenueItemProps = {
-    id: number,
-    venueName: string
+    venueId: number,
+    name: string,
+    capacity: number,
+    address: string,
+    geolocation: string,
+    image: string,
+    email: string,
+    startDate: number,
+    endDate: number
 }
 
 const VenueItem = (props: VenueItemProps) => {
     return (
         <li>
-          <h4>{props.venueName}</h4>
-          <button className='btn btn-primary' type='button' >Open Venue Details</button>
+          <img className="venueImage" src={props.image} alt={props.name}></img>
+            <h4>{props.name}</h4>
+            <h6>Capacity: {props.capacity}</h6>
+            <h6>{props.address}</h6>
+            <h6>{props.email}</h6>
+            <h6>Available: {props.startDate} - {props.endDate}</h6>
+            <button className='btn btn-primary' type='button' >Open Venue Details</button>
         </li>
     )
 }
