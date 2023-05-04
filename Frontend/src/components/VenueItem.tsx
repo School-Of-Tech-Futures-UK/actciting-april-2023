@@ -16,15 +16,24 @@ const VenueItem = (props: VenueItemProps) => {
     const fullUrl = baseUrl + '/' + venueRename
 
     return (
-        <li className="venueItem">
-            <img className="venueImage" src={props.image} alt={props.name}></img>
-            <h4>{props.name}</h4>
-            <h6>Capacity: {props.capacity}</h6>
-            <h6>{props.address}</h6>
-            <h6>{props.email}</h6>
-            <h6>Available: {props.startDate} - {props.endDate}</h6>
-            <button className='btn btn-primary' type='button' onClick={() => window.open(fullUrl)}>View Venue</button>
-        </li>
+        <div className="col d-flex justify-content-center mb-3">
+            <div className="venueItem card text-center bg-light h-100">
+                <img className="card-img-top" src={props.image} alt={props.name}></img>
+                <div className="card-body">
+                    <h4 className="card-title">{props.name}</h4>
+                    <p className="card-text">
+                        Capacity: {props.capacity}
+                        <br></br>
+                        {props.address}
+                        <br></br>
+                        {props.email}
+                        <br></br>
+                        Available: {props.startDate} - {props.endDate}
+                    </p>
+                    <button className='btn btn-primary' type='button' onClick={() => window.open(fullUrl)}>View Venue</button>
+                </div>
+            </div>
+        </div>
     )
 }
 
