@@ -12,8 +12,8 @@ export type VenueItemProps = {
 
 const VenueItem = (props: VenueItemProps) => {
     return (
-        <li>
-          <img className="venueImage" src={props.image} alt={props.name}></img>
+        <li className="venueItem">
+            <img className="venueImage" src={props.image} alt={props.name}></img>
             <h4>{props.name}</h4>
             <h6>Capacity: {props.capacity}</h6>
             <h6>{props.address}</h6>
