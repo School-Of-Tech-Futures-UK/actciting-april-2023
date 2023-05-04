@@ -1,5 +1,6 @@
 // Express app
 import express from 'express'
+import { Request, Response } from 'express'
 import * as dbHelper from './database-helper'
 const app = express()
 const port = 3000
@@ -17,7 +18,17 @@ app.get('/', (request, response) => {
 })
 
 // API urls code here
-app.get('/venues', dbHelper.getVenues)
+app.get('/venues', async (request: Request, response: Response) => {
+  console.log('GET getVenues/');
+
+  try{
+    const venues = await dbHelper.getVenues();
+    response.status(200).json(venues)
+  } catch (err){
+    console.log('Error thrown in getVenues: ', (err as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+});
 app.get('/venue/:id', dbHelper.getVenueById)
 app.post('/venues', dbHelper.createVenue)
 app.put('/venue/:id', dbHelper.updateVenue)

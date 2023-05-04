@@ -76,8 +76,8 @@ echo ""
 
 echo ""
 echo "--delete venue 3--"
-curl -X DELETE http://localhost:3000/venue/3
-curl -X DELETE http://localhost:3000/venue/4
+curl -X DELETE http://localhost:3000/venue/1
+
 echo ""
 
 echo ""
