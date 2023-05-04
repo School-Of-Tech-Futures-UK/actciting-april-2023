@@ -66,7 +66,7 @@ echo ""
 
 echo ""
 echo "--update venue 3--"
-curl -X PUT -d "name=UPDATEDNAME789" -d "capacity=20000000" -d "address=newaddress" -d "geolocation=20000000" -d "image=20000000" -d "email=newmail@newmail.com" -d "start_date=20000000" -d "end_date=45678"  http://localhost:3000/venue/3
+curl -X PUT -d "name=UPDATEDNAME789" -d "capacity=20000000" -d "address=newaddress" -d "geolocation=20000000" -d "image=20000000" -d "email=newmail@newmail.com" -d "start_date=20000000" -d "end_date=45678" http://localhost:3000/venue/3
 echo ""
 
 echo ""

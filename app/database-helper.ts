@@ -73,7 +73,7 @@ export const updateVenue = async (request: Request, response: Response) => {
     const results = await pool.query(
       // 'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING venue_id;'
       'UPDATE venues SET name = $1, capacity = $2, address=$3, geolocation=$4, image=$5, email=$6, start_date=$7, end_date=$8 WHERE venue_id = $9;',
-      [name, capacity, address, geolocation, image, email, start_date, end_date ]
+      [name, capacity, address, geolocation, image, email, start_date, end_date, venue_id ]
     )
     const message = `updateVenue: modified with ID: ${venue_id}`
     console.log(message)
