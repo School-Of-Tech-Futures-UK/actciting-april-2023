@@ -1,15 +1,15 @@
 import VenueItem from "./VenueItem"
 
 export interface Venue {
-    venueId: number,
+    venue_id: number,
     name: string,
     capacity: number,
     address: string,
     geolocation: string,
     image: string,
     email: string,
-    startDate: number,
-    endDate: number
+    start_date: number,
+    end_date: number
 }
 
 export type VenueListProps = {
@@ -20,9 +20,9 @@ const VenueList = (props: VenueListProps) => {
     return (
         <ul>
           {props.venueArray.map((venue, index) => (
-            <VenueItem key={venue.venueId} venueId={venue.venueId} name={venue.name} capacity={venue.capacity}
+            <VenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
             address={venue.address} geolocation={venue.geolocation} image={venue.image}
-            email={venue.email} startDate={venue.startDate} endDate={venue.endDate}/>
+            email={venue.email} startDate={venue.start_date} endDate={venue.end_date}/>
           ))}
         </ul>
     )

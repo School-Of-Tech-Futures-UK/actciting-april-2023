@@ -15,13 +15,11 @@ const VenuePage = () => {
     const fetchVenues = async () => {
         const results = await fetch('http://localhost:3000/venues')
         const data = await results.json()
-
         return data
     }
 
     useEffect(() => {
         fetchVenues().then(setVenues)
-        console.log(currentVenues)
     }, [])
 
 
