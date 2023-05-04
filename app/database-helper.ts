@@ -31,18 +31,18 @@ export const getVenues = async (request: Request, response: Response) => {
 }
 
 export const getVenueById = async (request: Request, response: Response) => {
-  const Venue_id = parseInt(request.params.id)
-  console.log(`getVenueById: venue_id=${Venue_id}`)
+  const venue_id = parseInt(request.params.id)
+  console.log(`getVenueById: venue_id=${venue_id}`)
 
   try {
     const results = await pool.query(
       'SELECT * FROM venues WHERE venue_id = $1;',
-      [Venue_id]
+      [venue_id]
     )
     response.status(200).json(results.rows)
   } catch (error) {
     console.log('Error thrown in getVenueById: ', (error as Error).message)
-    response.status(500).json({ message: 'There was an error' })
+    response.status(500).json((error as Error).message)
   }
 }
 
@@ -52,10 +52,10 @@ export const createVenue = async (request: Request, response: Response) => {
 
   try {
     const results = await pool.query(
-      'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date) VALUES ($1-$8) RETURNING venue_id;',
+      'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING venue_id;',
       [name, capacity, address, geolocation, image, email, start_date, end_date ]
     )
-    const message = `createVenue: Venue added with ID: ${results.rows[0].venue_id}`
+    const message = `createVenue: venue added with ID: ${results.rows[0].venue_id}`
     console.log(message)
     response.status(201).send(message)
   } catch (error) {
@@ -65,16 +65,17 @@ export const createVenue = async (request: Request, response: Response) => {
 }
 
 export const updateVenue = async (request: Request, response: Response) => {
-  const Venue_id = parseInt(request.params.id)
-  const { first_name, surname } = request.body
-  console.log(`updateVenue: Venue_id=${Venue_id}`)
+  const venue_id = parseInt(request.params.id)
+  const { name, capacity, address, geolocation, image, email, start_date, end_date } = request.body
+  console.log(`updateVenue: venue_id=${venue_id}`)
 
   try {
     const results = await pool.query(
-      'UPDATE Venue SET first_name = $1, surname = $2 WHERE Venue_id = $3;',
-      [first_name, surname, Venue_id]
+      // 'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING venue_id;'
+      'UPDATE venues SET name = $1, capacity = $2, address=$3, geolocation=$4, image=$5, email=$6, start_date=$7, end_date=$8 WHERE venue_id = $9;',
+      [name, capacity, address, geolocation, image, email, start_date, end_date ]
     )
-    const message = `updateVenue: modified with ID: ${Venue_id}`
+    const message = `updateVenue: modified with ID: ${venue_id}`
     console.log(message)
     response.status(200).send(message)
   } catch (error) {
@@ -84,15 +85,15 @@ export const updateVenue = async (request: Request, response: Response) => {
 }
 
 export const deleteVenue = async (request: Request, response: Response) => {
-  const Venue_id = parseInt(request.params.id)
-  console.log(`deleteVenue: Venue_id=${Venue_id}`)
+  const venue_id = parseInt(request.params.id)
+  console.log(`deleteVenue: venue_id=${venue_id}`)
 
   try {
     const results = await pool.query(
-      'DELETE FROM Venue WHERE Venue_id = $1;',
-      [Venue_id]
+      'DELETE FROM venues WHERE venue_id = $1;',
+      [venue_id]
     )
-    const message = `deleteVenue: Venue deleted with ID: ${Venue_id}`
+    const message = `deleteVenue: venue deleted with ID: ${venue_id}`
     console.log(message)
     response.status(200).send(message)
   } catch (error) {
