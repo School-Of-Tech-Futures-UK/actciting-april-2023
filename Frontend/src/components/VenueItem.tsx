@@ -12,8 +12,7 @@ export type VenueItemProps = {
 
 const VenueItem = (props: VenueItemProps) => {
     const baseUrl = 'localhost:3000'
-    const venueRename = props.name.replaceAll(' ', '').toLowerCase()
-    const fullUrl = baseUrl + '/' + venueRename
+    const fullUrl = baseUrl + '/' + props.venueId
 
     return (
         <div className="col d-flex justify-content-center mb-3">
