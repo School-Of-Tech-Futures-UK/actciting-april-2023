@@ -8,7 +8,7 @@ const AddVenue = (props: AddVenueProps) => {
         <div>
             <button className='btn btn-primary' type='button' onClick={props.handleAddVenueClick}>Add Venue</button>
 
-            <div className={`addVenueForm ${props.newVenueDivState}`}>
+            <div className={`addVenueForm ${props.newVenueDivState}`} data-testid="venueForm">
                 <label htmlFor="venueName">Venue Name:</label>
                 <input className="form-control is-valid" type="text" id="venueName"></input>
 
