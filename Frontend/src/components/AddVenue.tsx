@@ -10,25 +10,25 @@ const AddVenue = (props: AddVenueProps) => {
 
             <div className={`addVenueForm ${props.newVenueDivState}`} data-testid="venueForm">
                 <label htmlFor="venueName">Venue Name:</label>
-                <input className="form-control is-valid" type="text" id="venueName"></input>
+                <input className="form-control" type="text" id="venueName"></input>
 
                 <label htmlFor="venueCapacity"> Venue Capacity:</label>
-                <input className="form-control is-valid" type="text"></input>
+                <input className="form-control" type="text"></input>
 
                 <label htmlFor="venueAddress"> Venue Address:</label>
-                <input className="form-control is-valid" type="text" id ="venueAddress"></input>
+                <input className="form-control" type="text" id ="venueAddress"></input>
 
                 <label htmlFor="venueGeolocation"> Venue Geolocation:</label>
-                <input className="form-control is-valid" type="text" id = "venueGeolocation"></input>
+                <input className="form-control" type="text" id = "venueGeolocation"></input>
 
                 <label htmlFor="Email"> Email:</label>
-                <input className="form-control is-valid" type="text" id="Email"></input>
+                <input className="form-control" type="text" id="Email"></input>
 
                 <label htmlFor="venueStartDAte"> Venue Start Date</label>
-                <input className="form-control is-valid" type="text" id = "venueStartDate"></input>
+                <input className="form-control" type="text" id = "venueStartDate"></input>
 
                 <label htmlFor="venueEndDAte"> Venue End Date</label>
-                <input className="form-control is-valid" type="text" id = "venueEndDate"></input>
+                <input className="form-control" type="text" id = "venueEndDate"></input>
 
                 <button /*onClick={function to submit data to database }*/>Submit</button>
             </div>
