@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import AddVenue from "../components/AddVenue"
 import VenueList from "../components/VenueList"
+import Navbar from "../components/Navbar"
 
 const VenuePage = () => {
 
@@ -25,7 +26,8 @@ const VenuePage = () => {
 
     return (
         <>
-        <h1>ActCiting</h1>
+        <Navbar/>
+        <br></br>   
         <AddVenue handleAddVenueClick={addVenueClickHandler} newVenueDivState={newVenueDivDisplay}/>
         <VenueList venueArray={currentVenues}/>
         <footer>
