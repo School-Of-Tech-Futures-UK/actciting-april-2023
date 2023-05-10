@@ -11,7 +11,7 @@ export type VenueItemProps = {
 }
 
 const VenueItem = (props: VenueItemProps) => {
-    const baseUrl = 'localhost:3000'
+    const baseUrl = 'localhost:3001'
     const fullUrl = baseUrl + '/' + props.venueId
 
     return (
