@@ -8,7 +8,12 @@ export interface AddVenueProps {
 
 const AddVenue = (props: AddVenueProps) => {
     const [Name, setValue] = useState('')
-   
+    const [CapacityVal, setCapacity] = useState('')
+    const [AddressVal, setAddress] = useState('')
+    const [GeolocationVal, setGeolocation] = useState('')
+    const [EmailVal, setEmail] = useState('')
+    const [StartVal, setStart] = useState('')
+    const [EndVal, setEnd] = useState('')
 
 
 
@@ -20,12 +25,13 @@ const AddVenue = (props: AddVenueProps) => {
           },
           body: JSON.stringify({
             name: Name,
-           // capacity: event.capacity,
-            // address: event.venueAddress,
-            // geolocation: event.venueGeolocation,
-            // email: event.Email,
-            // start_date: event.venueStartDate,
-            // end_date: event.venueEndDate,
+            capacity: CapacityVal,
+            address: AddressVal,
+            geolocation: GeolocationVal,
+            image: "https://lh5.googleusercontent.com/p/AF1QipP2sN2qKTb-4beqF1zFeMWGCP3vW-Ih1X2o4QfE=w426-h240-k-no", // placeholder image
+            email: EmailVal,
+            start_date: StartVal,
+            end_date: EndVal,
           })
         })
           .then(response => {
@@ -57,24 +63,25 @@ const AddVenue = (props: AddVenueProps) => {
                 <input className="form-control" type="text" id="venueName" name = "venueName"  value={Name} onInput={(event) => setValue((event.target as HTMLInputElement).value)} ></input>
 
                 <label htmlFor="venueCapacity"> Venue Capacity:</label>
-                <input className="form-control" type="text" id ="capacity"></input>
+                <input className="form-control" type="text" id ="capacity" value={CapacityVal} onInput={(event) => setCapacity((event.target as HTMLInputElement).value)}></input>
 
                 <label htmlFor="venueAddress"> Venue Address:</label>
-                <input className="form-control" type="text" id ="venueAddress"></input>
+                <input className="form-control" type="text" id ="venueAddress" value={AddressVal} onInput={(event) => setAddress((event.target as HTMLInputElement).value)}></input>
 
                 <label htmlFor="venueGeolocation"> Venue Geolocation:</label>
-                <input className="form-control" type="text" id = "venueGeolocation"></input>
+                <input className="form-control" type="text" id = "venueGeolocation" value={GeolocationVal} onInput={(event) => setGeolocation((event.target as HTMLInputElement).value)}></input>
 
                 <label htmlFor="Email"> Email:</label>
-                <input className="form-control" type="text" id="Email"></input>
+                <input className="form-control" type="text" id="Email" value={EmailVal} onInput={(event) => setEmail((event.target as HTMLInputElement).value)}></input>
 
                 <label htmlFor="venueStartDAte"> Venue Start Date</label>
-                <input className="form-control" type="text" id = "venueStartDate"></input>
+                <input className="form-control" type="text" id = "venueStartDate" value={StartVal} onInput={(event) => setStart((event.target as HTMLInputElement).value)}></input>
 
                 <label htmlFor="venueEndDAte"> Venue End Date</label>
-                <input className="form-control" type="text" id = "venueEndDate"></input>
+                <input className="form-control" type="text" id = "venueEndDate"value={EndVal} onInput={(event) => setEnd((event.target as HTMLInputElement).value)}></input>
 
-                <button onClick={clickHandler }>Submit</button>
+             
+                <a className='btn btn-primary my-2'  onClick={clickHandler } href = "/">Submit </a>
             </div>
         </div>
     )
