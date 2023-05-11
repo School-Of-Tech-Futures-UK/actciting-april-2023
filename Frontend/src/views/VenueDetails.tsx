@@ -18,11 +18,27 @@ export type VenuePageProps = {
   eventTime: string,
 }
 
+const deleteHandler = (id:any) => {
+  fetch(`http://localhost:3000/venue/${id}`, {
+    method: 'DELETE'
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle successful deletion
+      } else {
+        // Handle error
+      }
+    })
+    .catch(error => {
+      // Handle network or fetch error
+    });
+};
 
 const VenueDetails = () => {
   const {id} = useParams()
   const [currentVenue, setVenue] = useState([])
-
+  const handleDeleteClick = () => {
+    deleteHandler(id);}
   const fetchVenues = async () => {
 
     const results = await fetch('http://localhost:3000/venue/'+id)
@@ -57,7 +73,7 @@ const VenueDetails = () => {
 
         <br></br>
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
-
+        <a className='btn btn-primary my-2'  onClick={handleDeleteClick} href = "/">Delete </a>
         <br></br> 
         <h1>Venue Details for{id} </h1>
         <h2></h2>
