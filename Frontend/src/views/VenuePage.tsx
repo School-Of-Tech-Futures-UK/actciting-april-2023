@@ -12,6 +12,9 @@ const VenuePage = () => {
     const addVenueClickHandler = () => {
         newVenueDivDisplay === 'hide'? setNewVenueDivDisplay('show') : setNewVenueDivDisplay('hide')
     }
+  
+
+
 
     const fetchVenues = async () => {
         const results = await fetch('http://localhost:3000/venues')

@@ -11,7 +11,7 @@ export type VenueItemProps = {
 }
 
 const VenueItem = (props: VenueItemProps) => {
-    const baseUrl = 'localhost:3000'
+    const baseUrl = 'http://localhost:3001'
     const fullUrl = baseUrl + '/' + props.venueId
 
     return (
@@ -29,7 +29,8 @@ const VenueItem = (props: VenueItemProps) => {
                         <br></br>
                         Available: {props.startDate} - {props.endDate}
                     </p>
-                    <button className='btn btn-primary' type='button' onClick={() => window.open(fullUrl)}>View Venue</button>
+                   {/* <button className='btn btn-primary' type='button' onClick={() => window.open(fullUrl)}>View Venue</button> */}
+                   <a href ={fullUrl} className='btn btn-primary'>view venue</a>
                 </div>
             </div>
         </div>
