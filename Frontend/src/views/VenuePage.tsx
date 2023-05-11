@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import AddVenue from "../components/AddVenue"
 import VenueList from "../components/VenueList"
+import Navbar from "../components/Navbar"
 
 export type VenuePageProps = {
   id: number,
@@ -11,26 +12,27 @@ export type VenuePageProps = {
 
 const VenuePage = () => {
 
-  const [currentVenues, setVenues] = useState(
-    [{
-      id: 1,
-      venueName: 'The 02 Arena',
-    },
-    {
-      id: 2,
-      venueName: 'Wembley',
-    },
-    {
-      id: 3,
-      venueName: 'MGM Las Vegas',
-    }]
-  )
-
-  const [newVenueDivDisplay, setNewVenueDivDisplay] = useState('hide')
+    const [currentVenues, setVenues] = useState([])
+    
+    const [newVenueDivDisplay, setNewVenueDivDisplay] = useState('hide')
 
   const addVenueClickHandler = () => {
     newVenueDivDisplay === 'hide' ? setNewVenueDivDisplay('show') : setNewVenueDivDisplay('hide')
   }
+  
+
+
+
+    const fetchVenues = async () => {
+        const results = await fetch('http://localhost:3000/venues')
+        const data = await results.json()
+        return data
+    }
+
+    useEffect(() => {
+        fetchVenues().then(setVenues)
+    }, [])
+
 
   const [approvalStatus, setApprovalStatus] = useState('pending');
 
