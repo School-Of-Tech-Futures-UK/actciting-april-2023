@@ -3,15 +3,17 @@ import AddVenue from "../components/AddVenue"
 import VenueList from "../components/VenueList"
 import Navbar from "../components/Navbar"
 
+
+
 const VenuePage = () => {
 
     const [currentVenues, setVenues] = useState([])
     
     const [newVenueDivDisplay, setNewVenueDivDisplay] = useState('hide')
 
-    const addVenueClickHandler = () => {
-        newVenueDivDisplay === 'hide'? setNewVenueDivDisplay('show') : setNewVenueDivDisplay('hide')
-    }
+  const addVenueClickHandler = () => {
+    newVenueDivDisplay === 'hide' ? setNewVenueDivDisplay('show') : setNewVenueDivDisplay('hide')
+  }
   
 
 
@@ -27,17 +29,17 @@ const VenuePage = () => {
     }, [])
 
 
-    return (
-        <>
-        <Navbar/>
-        <br></br>   
-        <AddVenue handleAddVenueClick={addVenueClickHandler} newVenueDivState={newVenueDivDisplay}/>
-        <VenueList venueArray={currentVenues}/>
-        <footer>
-            <a href="/">Contact Us</a>
-        </footer>
-        </>
-    )
-}
+  return (
+    <>
+    <Navbar/>
+      <h1>ActCiting</h1>
+      <AddVenue handleAddVenueClick={addVenueClickHandler} newVenueDivState={newVenueDivDisplay} />
+      <VenueList venueArray={currentVenues} />
+      <footer>
+        <a href="/">Contact Us</a>
+      </footer>
+    </>
+  );
+};
 
-export default VenuePage
+export default VenuePage;
