@@ -6,6 +6,11 @@ import VenuePage from './VenuePage';
 import VenueItem from '../components/VenueItem';
 import VenueList from '../components/VenueList';
 
+import ViewVenueItem from '../components/ViewVenueItem';
+import ViewVenueList from '../components/ViewVenueList';
+
+
+
 export type VenuePageProps = {
   id: number,
   venueName: string,
@@ -13,20 +18,27 @@ export type VenuePageProps = {
   eventTime: string,
 }
 
+
 const VenueDetails = () => {
-  const [currentVenues, setVenues] = useState([])
-  
+  const {id} = useParams()
+  const [currentVenue, setVenue] = useState([])
+
   const fetchVenues = async () => {
-    const results = await fetch('http://localhost:3000/venues')
+
+    const results = await fetch('http://localhost:3000/venue/'+id)
     const data = await results.json()
     return data
 }
 
-useEffect(() => {
-    fetchVenues().then(setVenues)
-}, [])
+  useEffect(() => {
+      fetchVenues().then(setVenue)
+  }, [])
 
-  const {id} = useParams()
+  const onSelectVenue = (venue_id: any) => {
+    setVenue(venue_id)
+    console.log(currentVenue)
+  }
+
 
   const [approvalStatus, setApprovalStatus] = useState('pending');
 
@@ -42,6 +54,10 @@ useEffect(() => {
     return(
       <>
         <Navbar/>
+
+        <br></br>
+        <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
+
         <br></br> 
         <h1>Venue Details for{id} </h1>
         <h2></h2>
@@ -56,6 +72,7 @@ useEffect(() => {
         {approvalStatus === 'approved' && <p>Event approved!</p>}
         {approvalStatus === 'denied' && <p>Event denied.</p>}
       </div>
+
         <footer>
             <a href="/Contact">Contact Us</a>
         </footer>
