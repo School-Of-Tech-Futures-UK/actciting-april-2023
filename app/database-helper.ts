@@ -40,7 +40,7 @@ export const getVenueById = async (venue_id:any) => {
       'SELECT * FROM venues WHERE venue_id = $1;',
       [venue_id]
     )
-    return results
+    return results.rows;
   } catch (error) {
     throw error
   }

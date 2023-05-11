@@ -7,27 +7,35 @@ import VenueList from '../components/VenueList';
 import ViewVenueItem from '../components/ViewVenueItem';
 import ViewVenueList from '../components/ViewVenueList';
 
+
+
 const VenueDetails = () => {
-  const [currentVenues, setVenues] = useState([])
-  
+  const {id} = useParams()
+  const [currentVenue, setVenue] = useState([])
+
   const fetchVenues = async () => {
-    const results = await fetch('http://localhost:3000/venues')
+
+    const results = await fetch('http://localhost:3000/venue/'+id)
     const data = await results.json()
     return data
 }
 
-useEffect(() => {
-    fetchVenues().then(setVenues)
-}, [])
+  useEffect(() => {
+      fetchVenues().then(setVenue)
+  }, [])
 
-  const {id} = useParams()
+  const onSelectVenue = (venue_id: any) => {
+    setVenue(venue_id)
+    console.log(currentVenue)
+  }
+
 
 
     return(
       <>
         <Navbar/>
-        <br></br> 
-        <ViewVenueList venueArray={currentVenues} venueIdShow={id}/>
+        <br></br>
+        <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
         <footer>
             <a href="/Contact">Contact Us</a>
         </footer>
