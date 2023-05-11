@@ -1,4 +1,4 @@
-export type VenueItemProps = {
+export type ViewVenueItemProps = {
     venueId: number,
     name: string,
     capacity: number,
@@ -10,11 +10,10 @@ export type VenueItemProps = {
     endDate: number
 }
 
-const VenueItem = (props: VenueItemProps) => {
-    const baseUrl = 'http://localhost:3001'
-    const fullUrl = baseUrl + '/' + props.venueId
+const ViewVenueItem = (props: ViewVenueItemProps) => {
 
     return (
+        <>
         <div className="col d-flex justify-content-center mb-3">
             <div className="venueItem card text-center bg-light h-100">
                 <img className="card-img-top" src={props.image} alt={props.name}></img>
@@ -29,11 +28,11 @@ const VenueItem = (props: VenueItemProps) => {
                         <br></br>
                         Available: {props.startDate} - {props.endDate}
                     </p>
-                   <a href ={fullUrl} className='btn btn-primary'>View Venue</a>
                 </div>
             </div>
         </div>
+        </>
     )
 }
 
-export default VenueItem
+export default ViewVenueItem
