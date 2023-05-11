@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 import Navbar from "../components/Navbar"
 import ViewVenueList from '../components/ViewVenueList';
-import GigRequests from '../components/GigRequests';
+import ViewGigList from '../components/GigRequestLists';
 
 
 
@@ -11,6 +11,8 @@ import GigRequests from '../components/GigRequests';
 const VenueDetails = () => {
     const {id} = useParams()
       const [currentVenue, setVenue] = useState([])
+      const [currentGigs, setGigs] = useState([])
+      
     
       const fetchVenues = async () => {
     
@@ -18,9 +20,17 @@ const VenueDetails = () => {
         const data = await results.json()
         return data
     }
+
+    const fetchGigs = async () => {
+    
+      const results = await fetch('http://localhost:3000/gigs-by-venue/'+id)
+      const data = await results.json()
+      return data
+  }
     
       useEffect(() => {
           fetchVenues().then(setVenue)
+          fetchGigs().then(setGigs)
       }, [])
 
 
@@ -33,7 +43,7 @@ const VenueDetails = () => {
 
         <br></br> 
         
-        <GigRequests/>
+        <ViewGigList GigArray={currentGigs} GigIdShow={id} />
         <footer>
             <a href="/Contact">Contact Us</a>
         </footer>
