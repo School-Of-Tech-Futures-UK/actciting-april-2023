@@ -8,7 +8,7 @@ export interface AddVenueProps {
 
 const AddVenue = (props: AddVenueProps) => {
     const [Name, setValue] = useState('')
-    const [Name, setValue] = useState('')
+   
 
 
 
@@ -20,7 +20,7 @@ const AddVenue = (props: AddVenueProps) => {
           },
           body: JSON.stringify({
             name: Name,
-            capacity: event.capacity,
+           // capacity: event.capacity,
             // address: event.venueAddress,
             // geolocation: event.venueGeolocation,
             // email: event.Email,
@@ -38,7 +38,7 @@ const AddVenue = (props: AddVenueProps) => {
           })
           .catch(error => console.log('there was an error:', error))
 
-          console.log(value)
+          console.log(Name)
       
 
     }
@@ -54,7 +54,7 @@ const AddVenue = (props: AddVenueProps) => {
 
             <div className={`addVenueForm ${props.newVenueDivState}`} data-testid="venueForm">
                 <label htmlFor="venueName">Venue Name:</label>
-                <input className="form-control" type="text" id="venueName" name = "venueName"  value={value} onInput={(event) => setValue((event.target as HTMLInputElement).value)} ></input>
+                <input className="form-control" type="text" id="venueName" name = "venueName"  value={Name} onInput={(event) => setValue((event.target as HTMLInputElement).value)} ></input>
 
                 <label htmlFor="venueCapacity"> Venue Capacity:</label>
                 <input className="form-control" type="text" id ="capacity"></input>

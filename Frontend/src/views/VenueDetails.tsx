@@ -17,14 +17,14 @@ useEffect(() => {
     fetchVenues().then(setVenues)
 }, [])
 
-  const id = useParams()
+  const {id} = useParams()
 
 
     return(
       <>
         <Navbar/>
         <br></br> 
-        <h1>Venue Details for </h1>
+        <h1>Venue Details for{id} </h1>
         <h2></h2>
         <p>Some content about the venue.</p>
         <footer>
