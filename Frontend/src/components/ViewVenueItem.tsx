@@ -12,8 +12,8 @@ export type ViewVenueItemProps = {
 
 const ViewVenueItem = (props: ViewVenueItemProps) => {
 
+
     return (
-        <>
         <div className="col d-flex justify-content-center mb-3">
             <div className="venueItem card text-center bg-light h-100">
                 <img className="card-img-top" src={props.image} alt={props.name}></img>
@@ -31,7 +31,6 @@ const ViewVenueItem = (props: ViewVenueItemProps) => {
                 </div>
             </div>
         </div>
-        </>
     )
 }
 
