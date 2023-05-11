@@ -53,6 +53,9 @@ echo ""
 echo "--get current venue 2--"
 curl -X GET http://localhost:3000/venue/2
 echo ""
+echo "--get current venue 4--"
+curl -X GET http://localhost:3000/venue/4
+echo ""
 
 echo ""
 echo "--add venue--"
@@ -74,9 +77,15 @@ echo "--get current venues again--"
 curl -X GET http://localhost:3000/venues
 echo ""
 
+
+echo ""
+echo "--get current venue 3--"
+curl -X GET http://localhost:3000/venue/3
+echo ""
+
 echo ""
 echo "--delete venue 3--"
-curl -X DELETE http://localhost:3000/venue/1
+curl -X DELETE http://localhost:3000/venue/3
 
 echo ""
 

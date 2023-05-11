@@ -33,7 +33,24 @@ app.get('/venues', async (request: Request, response: Response) => {
     response.status(500).json({ message: 'There was an error' })
   }
 });
-app.get('/venue/:id', dbHelper.getVenueById)
+
+
+app.get('/venue/:id', async (request: Request, response: Response) => {
+  console.log('GET getVenuesById/');
+  const venue_id = parseInt(request.params.id)
+  console.log(`getVenueById: venue_id=${venue_id}`)
+  try{
+    const venueById = await dbHelper.getVenueById(venue_id);
+    response.status(200).json(venueById)
+    console.log('about to request db')
+  } catch (err){
+    console.log('Error thrown in getVenues: ', (err as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+});
+
+
+//app.get('/venue/:id', dbHelper.getVenueById)
 app.post('/venues', dbHelper.createVenue)
 app.put('/venue/:id', dbHelper.updateVenue)
 app.delete('/venue/:id', dbHelper.deleteVenue)

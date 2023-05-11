@@ -18,19 +18,31 @@ export const getVenues = async () => {
   }
 }
 
-export const getVenueById = async (request: Request, response: Response) => {
-  const venue_id = parseInt(request.params.id)
-  console.log(`getVenueById: venue_id=${venue_id}`)
+// export const getVenues = async (request: Request, response: Response) => {
+//   console.log('getVenues')
+
+//   try {
+//     const results = await pool.query(
+//       'SELECT * FROM venues ORDER BY venue_id ASC;'
+//     )
+//     response.status(200).json(results.rows)
+//   } catch (error) {
+//     console.log('Error thrown in getVenues: ', (error as Error).message)
+//     response.status(500).json({ message: 'There was an error' })
+//   }
+// }
+
+
+export const getVenueById = async (venue_id:any) => {
 
   try {
     const results = await createPool().query(
       'SELECT * FROM venues WHERE venue_id = $1;',
       [venue_id]
     )
-    response.status(200).json(results.rows)
+    return results
   } catch (error) {
-    console.log('Error thrown in getVenueById: ', (error as Error).message)
-    response.status(500).json((error as Error).message)
+    throw error
   }
 }
 
