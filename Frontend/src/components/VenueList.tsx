@@ -20,13 +20,15 @@ const VenueList = (props: VenueListProps) => {
     return (
         <>
         <h2>Venues</h2>
-        <ul className="venueList">
-          {props.venueArray.map((venue, index) => (
-            <VenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
-            address={venue.address} geolocation={venue.geolocation} image={venue.image}
-            email={venue.email} startDate={venue.start_date} endDate={venue.end_date}/>
-          ))}
-        </ul>
+        <div className="venueList container-fluid">
+          <div className="row">
+            {props.venueArray.map((venue, index) => (
+              <VenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
+              address={venue.address} geolocation={venue.geolocation} image={venue.image}
+              email={venue.email} startDate={venue.start_date} endDate={venue.end_date}/>
+            ))}
+          </div>
+        </div>
         </>
     )
 }

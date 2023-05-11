@@ -18,6 +18,6 @@ CREATE TABLE venue_requests (
     artist_genre VARCHAR(255) NOT NULL,
     approval_status BOOLEAN NOT NULL,
     PRIMARY KEY(request_id),
-    --CONSTRAINT fk_artist FOREIGN KEY(artist_id) REFERENCES artists(artist_id),
+    -- CONSTRAINT fk_artist FOREIGN KEY(artist_id) REFERENCES artists(artist_id),
     CONSTRAINT fk_venue FOREIGN KEY(venue_id) REFERENCES venues(venue_id)
 );
