@@ -1,54 +1,27 @@
 import { useState,useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Navbar from "../components/Navbar"
-import AddVenue from "../components/AddVenue"
-import VenuePage from './VenuePage';
-import VenueItem from '../components/VenueItem';
-import VenueList from '../components/VenueList';
-
-import ViewVenueItem from '../components/ViewVenueItem';
 import ViewVenueList from '../components/ViewVenueList';
+import GigRequests from '../components/GigRequests';
 
 
 
-export type VenuePageProps = {
-  id: number,
-  venueName: string,
-  artistName: string,
-  eventTime: string,
-}
 
 
 const VenueDetails = () => {
-  const {id} = useParams()
-  const [currentVenue, setVenue] = useState([])
-
-  const fetchVenues = async () => {
-
-    const results = await fetch('http://localhost:3000/venue/'+id)
-    const data = await results.json()
-    return data
-}
-
-  useEffect(() => {
-      fetchVenues().then(setVenue)
-  }, [])
-
-  const onSelectVenue = (venue_id: any) => {
-    setVenue(venue_id)
-    console.log(currentVenue)
-  }
-
-
-  const [approvalStatus, setApprovalStatus] = useState('pending');
-
-  const approveEvent = () => {
-    setApprovalStatus('approved');
-  };
-
-  const denyEvent = () => {
-    setApprovalStatus('denied');
-  };
+    const {id} = useParams()
+      const [currentVenue, setVenue] = useState([])
+    
+      const fetchVenues = async () => {
+    
+        const results = await fetch('http://localhost:3000/venue/'+id)
+        const data = await results.json()
+        return data
+    }
+    
+      useEffect(() => {
+          fetchVenues().then(setVenue)
+      }, [])
 
 
     return(
@@ -59,20 +32,8 @@ const VenueDetails = () => {
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
 
         <br></br> 
-        <h1>Venue Details for{id} </h1>
-        <h2></h2>
-        <p>Some content about the venue.</p>
-        <div>
-        {approvalStatus === 'pending' && (
-          <>
-            <button onClick={approveEvent}>Approve</button>
-            <button onClick={denyEvent}>Deny</button>
-          </>
-        )}
-        {approvalStatus === 'approved' && <p>Event approved!</p>}
-        {approvalStatus === 'denied' && <p>Event denied.</p>}
-      </div>
-
+        
+        <GigRequests/>
         <footer>
             <a href="/Contact">Contact Us</a>
         </footer>
