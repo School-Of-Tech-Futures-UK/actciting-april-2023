@@ -41,7 +41,8 @@ const VenueDetails = () => {
     deleteHandler(id);}
   const fetchVenues = async () => {
 
-    const results = await fetch('http://localhost:3000/venue/'+id)
+    const results = await fetch('http://localhost:3000/venue/' + id)
+    console.log(JSON.stringify(results, null, 2))
     const data = await results.json()
     return data
 }
@@ -73,7 +74,7 @@ const VenueDetails = () => {
 
         <br></br>
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
-        <a className='btn btn-primary my-2'  onClick={handleDeleteClick} href = "/">Delete </a>
+        <button className='btn btn-primary my-2'  onClick={handleDeleteClick} > Delete </button>
         <br></br> 
         <h1>Venue Details for{id} </h1>
         <h2></h2>
