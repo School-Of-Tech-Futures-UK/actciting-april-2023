@@ -103,3 +103,89 @@ export const deleteVenue = async (request: Request, response: Response) => {
     response.status(500).json({ message: 'There was an error' })
   }
 }
+
+export const getGigs= async (request: Request, response: Response) => {
+  console.log('getGigs')
+
+  try {
+    const results = await createPool().query(
+      'SELECT * FROM gig_requests ORDER BY gig_id ASC;'
+    )
+    response.status(200).json(results.rows)
+  } catch (error) {
+    console.log('Error thrown in getGigs: ', (error as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+}
+
+export const getGigById = async (request: Request, response: Response) => {
+  const gig_id = parseInt(request.params.id)
+  console.log(`getGigById: gig_id=${gig_id}`)
+
+  try { 
+    const results = await createPool().query(
+      'SELECT * FROM gig_requests WHERE gig_id = $1;',
+      [gig_id]
+    )
+    response.status(200).json(results.rows)
+  } catch (error) {
+    console.log('Error thrown in getGigById: ', (error as Error).message)
+    response.status(500).json((error as Error).message)
+  }
+}
+
+export const getGigsByVenue = async (request: Request, response: Response) => {
+
+  const gig_id = parseInt(request.params.id)
+  console.log(`getGigById: gig_id=${gig_id}`)
+
+  try { 
+    const results = await createPool().query(
+      'SELECT * FROM gig_requests WHERE venue_id = $1;',
+      [gig_id]
+    )
+    response.status(200).json(results.rows)
+  } catch (error) {
+    console.log('Error thrown in getGigById: ', (error as Error).message)
+    response.status(500).json((error as Error).message)
+  }
+}
+
+export const gigApprove = async (request: Request, response: Response) => {
+  const gig_id = parseInt(request.params.id)
+  const { approval_status } = request.body
+  console.log(`gigApprove: gig_id=${gig_id}`)
+
+  try {
+    const results = await createPool().query(
+
+      'UPDATE gig_requests SET approval_status = true WHERE gig_id = $1;',
+      [gig_id]
+    )
+    const message = `updateGig: modified with ID: ${gig_id}`
+    console.log(message)
+    response.status(200).send(message)
+  } catch (error) {
+    console.log('Error thrown in gigApprove ', (error as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+}
+
+export const gigDeny = async (request: Request, response: Response) => {
+  const gig_id = parseInt(request.params.id)
+  console.log(`GigDeny: gig_id=${gig_id}`)
+
+  try {
+    const results = await createPool().query(
+
+      'UPDATE gig_requests SET  approval_status = false WHERE gig_id = $1;',
+      [gig_id]
+    )
+    const message = `updateGig: modified with ID: ${gig_id}`
+    console.log(message)
+    response.status(200).send(message)
+  } catch (error) {
+    console.log('Error thrown in Deny ', (error as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+}
