@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, prettyDOM, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import VenuePage from './VenuePage'
 import '@testing-library/jest-dom/extend-expect'
@@ -49,11 +49,9 @@ describe('Button functionality', () => {
 
 describe('Adding Venue Functionality', () => {
 
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            json: () => Promise.resolve(),
-        } as Response)
-    );
+    beforeEach(() => {
+        jest.spyOn(global, "fetch").mockImplementation(() => Promise.resolve({ json: () => Promise.resolve()} as Response))
+    })
 
     it('Should add a new venue to the page', () => {
         render(<VenuePage/>)
@@ -67,6 +65,7 @@ describe('Adding Venue Functionality', () => {
 
         const addVenueButton= screen.getByText('Add Venue')
         const submitButton= screen.getByText('Submit')
+
         fireEvent.click(addVenueButton);
         userEvent.type(venueNameInput, "Venue A")
         userEvent.type(venueCapacityInput, "10")
@@ -75,10 +74,25 @@ describe('Adding Venue Functionality', () => {
         userEvent.type(venueEmailInput, "test@test.test")
         userEvent.type(venueStartDateInput, "12052023")
         userEvent.type(venueEndDateInput, "12052023")
-        fireEvent.click(submitButton);
+        fireEvent.click(submitButton)
         
-        expect(fetch).toHaveBeenCalledTimes(1)
-        expect(fetch).toHaveBeenLastCalledWith('http://localhost:3000/venues')
+        expect(fetch).toHaveBeenCalledTimes(2)
+        expect(fetch).toHaveBeenLastCalledWith(
+            expect.stringContaining('http://localhost:3000/venues'),
+            expect.objectContaining({
+                method: 'POST',
+                body: JSON.stringify({
+                    name: 'Venue A',
+                    capacity: "10",
+                    address: "1 Test Address",
+                    geolocation: "55.55, 55.55",
+                    image: "https://lh5.googleusercontent.com/p/AF1QipP2sN2qKTb-4beqF1zFeMWGCP3vW-Ih1X2o4QfE=w426-h240-k-no", // placeholder image
+                    email: "test@test.test",
+                    start_date: "12052023",
+                    end_date: "12052023",
+                })
+            })
+        )
     })
 })
 
