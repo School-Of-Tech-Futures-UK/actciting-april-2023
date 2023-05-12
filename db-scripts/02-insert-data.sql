@@ -10,3 +10,18 @@ INSERT INTO venues(name, capacity, address, geolocation, image, email, start_dat
     VALUES ('ExCel London', 5000, 'London E16 1XL', '51.50769109653238, 0.03087909196286992', 'https://lh5.googleusercontent.com/p/AF1QipMGSC6qDEq1YjlNlGdPcTNIGud8aiCxIIY5-jE6=w426-h240-k-no', 'events@excel.com', 25062023, 27062023);
 INSERT INTO venues(name, capacity, address, geolocation, image, email, start_date, end_date) 
     VALUES ('Royal Albert Hall', 5544, 'Kensington Gore, South Kensington, London SW7 2AP', '51.501028988693136, -0.1772587153755336', 'https://lh5.googleusercontent.com/p/AF1QipM1oCNVLy8fvACIHepEWeGgn3cKAHPQmdOQ9Z5Z=w425-h240-k-no', 'mail@royalalbert.co.uk', 20112023, 25112023);
+
+
+INSERT INTO gig_requests(artist, venue_id,  artist_genre, date) 
+    VALUES ('Dan', 1, 'Fake', '12/05/2023');
+INSERT INTO gig_requests(artist, venue_id,  artist_genre, date) 
+    VALUES ('Kaho', 1, 'Rock', '13/05/2023');
+INSERT INTO gig_requests(artist, venue_id,  artist_genre, date) 
+    VALUES ('Anees', 2, 'Country', '12/05/2023');
+INSERT INTO gig_requests(artist, venue_id,  artist_genre, date) 
+    VALUES ('Uzair', 2, 'Rap','13/10/2023');
+INSERT INTO gig_requests(artist, venue_id,  artist_genre, date) 
+    VALUES ('Mustafa', 2, 'Indie', '14/10/2023');
+INSERT INTO gig_requests(artist, venue_id,  artist_genre, date) 
+    VALUES ('Hajr', 3, 'Pop', '14/10/2023');
+

@@ -1,22 +1,11 @@
 import { useState,useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Navbar from "../components/Navbar"
-import AddVenue from "../components/AddVenue"
-import VenuePage from './VenuePage';
-import VenueItem from '../components/VenueItem';
-import VenueList from '../components/VenueList';
-
-import ViewVenueItem from '../components/ViewVenueItem';
 import ViewVenueList from '../components/ViewVenueList';
+import ViewGigList from '../components/GigRequestLists';
 
 
 
-export type VenuePageProps = {
-  id: number,
-  venueName: string,
-  artistName: string,
-  eventTime: string,
-}
 
 const deleteHandler = (id:any) => {
   fetch(`http://localhost:3000/venue/${id}`, {
@@ -35,36 +24,35 @@ const deleteHandler = (id:any) => {
 };
 
 const VenueDetails = () => {
-  const {id} = useParams()
-  const [currentVenue, setVenue] = useState([])
-  const handleDeleteClick = () => {
-    deleteHandler(id);}
-  const fetchVenues = async () => {
+    const {id} = useParams()
+    const [currentVenue, setVenue] = useState([])
+    const [currentGigs, setGigs] = useState([])
+        
+    const handleDeleteClick = () => {
+      deleteHandler(id);
+    }    
+     
+    const fetchVenues = async () => {
+        const results = await fetch('http://localhost:3000/venue/'+id)
+        const data = await results.json()
+        return data
+    }
 
-    const results = await fetch('http://localhost:3000/venue/'+id)
-    const data = await results.json()
-    return data
-}
-
-  useEffect(() => {
+    const fetchGigs = async () => {
+      const results = await fetch('http://localhost:3000/gigs-by-venue/'+id)
+      const data = await results.json()
+      return data
+    }
+  
+    const onSelectVenue = (venue_id: any) => {
+      setVenue(venue_id)
+      console.log(currentVenue)
+    }
+    
+    useEffect(() => {
       fetchVenues().then(setVenue)
-  }, [])
-
-  const onSelectVenue = (venue_id: any) => {
-    setVenue(venue_id)
-    console.log(currentVenue)
-  }
-
-
-  const [approvalStatus, setApprovalStatus] = useState('pending');
-
-  const approveEvent = () => {
-    setApprovalStatus('approved');
-  };
-
-  const denyEvent = () => {
-    setApprovalStatus('denied');
-  };
+      fetchGigs().then(setGigs)
+    }, [])
 
 
     return(
@@ -75,20 +63,8 @@ const VenueDetails = () => {
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
         <a className='btn btn-primary my-2'  onClick={handleDeleteClick} href = "/">Delete </a>
         <br></br> 
-        <h1>Venue Details for{id} </h1>
-        <h2></h2>
-        <p>Some content about the venue.</p>
-        <div>
-        {approvalStatus === 'pending' && (
-          <>
-            <button onClick={approveEvent}>Approve</button>
-            <button onClick={denyEvent}>Deny</button>
-          </>
-        )}
-        {approvalStatus === 'approved' && <p>Event approved!</p>}
-        {approvalStatus === 'denied' && <p>Event denied.</p>}
-      </div>
-
+        
+        <ViewGigList GigArray={currentGigs} GigIdShow={id} />
         <footer>
             <a href="/Contact">Contact Us</a>
         </footer>

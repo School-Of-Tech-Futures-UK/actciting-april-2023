@@ -55,6 +55,13 @@ app.post('/venues', dbHelper.createVenue)
 app.put('/venue/:id', dbHelper.updateVenue)
 app.delete('/venue/:id', dbHelper.deleteVenue)
 
+app.get('/gigs', dbHelper.getGigs)
+app.get('/gig/:id', dbHelper.getGigById)
+app.get('/gigs-by-venue/:id', dbHelper.getGigsByVenue)
+app.put('/gig-approve/:id', dbHelper.gigApprove)
+app.put('/gig-deny/:id', dbHelper.gigDeny)
+
+
 // Activate!
 app.listen(port, () => {
   console.log(`App running on port ${port} as process ${process.title}`)

@@ -25,7 +25,7 @@ const ViewVenueList = (props: ViewVenueListProps) => {
   
     return (
         <>
-        <h2>(change to venue name from api) Venues for {venueIdShow} </h2>
+        <h2>Venue Details for {venueIdShow} </h2>
 
             {props.venueArray.map((venue, index) => (
               <ViewVenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
