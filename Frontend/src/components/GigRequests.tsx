@@ -37,6 +37,7 @@ export const GigRequests = (props: ViewGig) => {
       return data
     }
     return(
+
       <div className="col d-flex justify-content-center mb-3">
             <div className="venueItem card text-center bg-light h-100">
                 <div className="card-body">
@@ -46,20 +47,19 @@ export const GigRequests = (props: ViewGig) => {
                         {approvalStatus === null && <p className="card-text">Approval Status: Pending </p> }
                         {approvalStatus === true && <p className="card-text">Approval Status: Approved </p> }
                         {approvalStatus === false && <p className="card-text">Approval Status: Denied </p> }
-
+                        {approvalStatus === null && (
+                      <>
+                        <button className="approval-status-button" onClick={approveEvent}>Approve</button>
+                        <button className="approval-status-button" onClick={denyEvent}>Deny</button>
+                      </>
+                    )}
                 </div>
+ 
             </div>
       
 
-  
-      {approvalStatus === null && (
-        <>
-          <button onClick={approveEvent}>Approve</button>
-          <button onClick={denyEvent}>Deny</button>
-        </>
-      )}
+      </div>
 
-    </div>
     );
   };
   export default  GigRequests;
