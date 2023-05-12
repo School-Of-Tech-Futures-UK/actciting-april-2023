@@ -94,6 +94,13 @@ echo "--get current venues again--"
 curl -X GET http://localhost:3000/venues
 echo ""
 
+
+echo ""
+echo "--get Gigs--"
+curl -X GET http://localhost:3000/gigs
+echo ""
+
+
 echo ""
 echo "... done"
 echo ""
