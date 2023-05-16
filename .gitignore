@@ -1,3 +1,10 @@
+node_modules/
+
+# CDK asset staging directory - does have sensitive info
+.cdk.staging
+cdk.out
+
+
 # Logs
 logs
 *.log
@@ -150,3 +157,7 @@ yarn-debug.log*
 yarn-error.log*
 
 build
+
+
+
+# production
