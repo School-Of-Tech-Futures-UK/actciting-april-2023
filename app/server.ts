@@ -42,7 +42,6 @@ app.get('/venue/:id', async (request: Request, response: Response) => {
   try{
     const venueById = await dbHelper.getVenueById(venue_id);
     response.status(200).json(venueById)
-    console.log('about to request db')
   } catch (err){
     console.log('Error thrown in getVenues: ', (err as Error).message)
     response.status(500).json({ message: 'There was an error' })
@@ -51,9 +50,56 @@ app.get('/venue/:id', async (request: Request, response: Response) => {
 
 
 //app.get('/venue/:id', dbHelper.getVenueById)
-app.post('/venues', dbHelper.createVenue)
-app.put('/venue/:id', dbHelper.updateVenue)
-app.delete('/venue/:id', dbHelper.deleteVenue)
+app.post('/venues', async (request: Request, response: Response) => {
+  const { name, capacity, address, geolocation, image, email, start_date, end_date } = request.body
+  console.log(`createVenue: name=${name}, capacity=${capacity}, address=${address}, geolocation=${geolocation}, image=${image}, email=${email}, start_date=${start_date}, end_date=${end_date}`)
+  try{
+    const result = await dbHelper.createVenue(name, capacity, address, geolocation, image, email, start_date, end_date);
+    response.status(200).json(result)
+  }
+  catch(error){
+    console.log('Error thrown in createVenue: ', (error as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+
+});
+
+
+
+app.put('/venue/:id', async (request: Request, response: Response) => {
+  const venue_id = parseInt(request.params.id)
+  const { name, capacity, address, geolocation, image, email, start_date, end_date } = request.body
+  console.log(`updateVenue: venue_id=${venue_id}`)
+
+  try{
+    const result = dbHelper.updateVenue(name, capacity, address, geolocation, image, email, start_date, end_date, venue_id)
+    response.status(200).json(result)
+  }
+
+  catch(error){
+    console.log('Error thrown in update Venue: ', (error as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+
+
+});
+
+app.delete('/venue/:id', async (request: Request, response: Response) => {
+  const venue_id = parseInt(request.params.id)
+  console.log(`deleteVenue: venue_id=${venue_id}`)
+
+  try{
+    const result = dbHelper.deleteVenue(venue_id)
+    response.status(200).json(result)
+  }
+  catch(error){
+    console.log('Error thrown in delete Venue: ', (error as Error).message)
+    response.status(500).json({ message: 'There was an error' })
+  }
+
+});
+
+
 
 app.get('/gigs', dbHelper.getGigs)
 app.get('/gig/:id', dbHelper.getGigById)
