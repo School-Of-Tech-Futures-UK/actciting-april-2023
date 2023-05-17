@@ -10,6 +10,7 @@ import * as apigw from 'aws-cdk-lib/aws-apigateway'
 import * as route53 from 'aws-cdk-lib/aws-route53'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as nodejs from 'aws-cdk-lib/aws-lambda-nodejs'
+import * as rds from 'aws-cdk-lib/aws-rds'
 
 export interface ActcitingSettings extends cdk.StackProps {
   certArn: string,
@@ -17,7 +18,6 @@ export interface ActcitingSettings extends cdk.StackProps {
   clusterArn: string,
   secretArn: string
 }
-
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ActcitingSettings) {
@@ -74,35 +74,197 @@ export class CdkStack extends cdk.Stack {
       }
     })
 
-    // const getVenuesApi = api.root.addResource('venues')
-    // getVenuesApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getVenuesLambda, { proxy: true }),
-    // )
+    // lambda function definition
 
-    // const getVenueByIdApi = api.root.addResource('venues')
-    // getVenueByIdApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getVenueByIdLambda, { proxy: true }),
-    // )
+    const lambdaEnvVars = {
+      NODE_ENV: 'production',
+      // AWS specific var to reuse TCP connection
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      SECRET_ARN: props.secretArn,
+      CLUSTER_ARN: props.clusterArn,
+      DATABASE_NAME: 'dev'
+    }
+    
 
-    // const postVenueApi = api.root.addResource('venues')
-    // postVenueApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postVenueLambda, { proxy: true }),
-    // )
 
-    // const putVenueApi = api.root.addResource('venues')
-    // putVenueApi.addMethod(
-    //   'PUT',
-    //   new apigw.LambdaIntegration(putVenueLambda, { proxy: true }),
-    // )
+const getVenuesLambda = new nodejs.NodejsFunction(this, 'venues-get-lambda',
+{
+  functionName: `${props.subDomain}-venues-get-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/venues-lambdas.ts',//folder that dan makes
+  handler: 'getVenuesHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+  const secretsManagerPermissions = new iam.PolicyStatement({
+    actions: [
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:GetSecretValue"
+    ],
+    effect: iam.Effect.ALLOW,
+    resources: [
+      '*'
+    ]
+  })
 
-    // const deleteVenueApi = api.root.addResource('venues')
-    // deleteVenueApi.addMethod(
-    //   'DELETE',
-    //   new apigw.LambdaIntegration(deleteVenueLambda, { proxy: true }),
-    // )
+  getVenuesLambda.addToRolePolicy(secretsManagerPermissions)
+
+const getVenueByIdLambda = new nodejs.NodejsFunction(this, 'venues-get-by-Id-lambda',
+{
+  functionName: `${props.subDomain}-venues-get-by-Id-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/venues-lambdas.ts',//folder that dan makes
+  handler: 'getVenueByIdHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+    
+const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
+{
+  functionName: `${props.subDomain}-create-venue-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/venues-lambdas.ts',//folder that dan makes
+  handler: 'createVenueHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
+{
+  functionName: `${props.subDomain}-update-venue-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/venues-lambdas.ts',//folder that dan makes
+  handler: 'updateVenueHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+
+const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
+{
+  functionName: `${props.subDomain}-delete-venue-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/venues-lambdas.ts',//folder that dan makes
+  handler: 'deleteVenueHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
+{
+  functionName: `${props.subDomain}-get-gigs-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/gig-lambdas.ts',//folder that dan makes
+  handler: 'getGigsHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
+{
+  functionName: `${props.subDomain}-get-gig-by-Id-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/gig-lambdas.ts',//folder that dan makes
+  handler: 'getGigByIdHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-lambda',
+{
+  functionName: `${props.subDomain}-get-gig-by-Venue-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/gig-lambdas.ts',//folder that dan makes
+  handler: 'getGigsByVenueHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
+{
+  functionName: `${props.subDomain}-gig-approve-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/gig-lambdas.ts',//folder that dan makes
+  handler: 'gigApproveHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
+{
+  functionName: `${props.subDomain}-gig-deny-lambda`,
+  runtime: lambda.Runtime.NODEJS_18_X,
+  entry: './functions/gig-lambdas.ts',//folder that dan makes
+  handler: 'gigDenyHandler',//name of the handler that dan is making
+  environment: lambdaEnvVars,
+  timeout: cdk.Duration.seconds(30),
+  }
+)
+
+    const healthcheckLambda = new nodejs.NodejsFunction(this, 'healthcheck-lambda', {
+      functionName: `${props.subDomain}-healthcheck-lambda`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: './functions/venues-lambdas.ts',//folder that dan makes
+      handler: 'healthcheck',//name of the handler that dan is making
+      environment: lambdaEnvVars,
+      timeout: cdk.Duration.seconds(30),
+          })
+
+    const cluster = rds.ServerlessCluster.fromServerlessClusterAttributes(this, 'database-cluster', {
+      clusterIdentifier: 'actsent-stack-rdscluster9d572005-rf41aba7zoc9'
+    })
+
+    // Venue lambda permissions
+    cluster.grantDataApiAccess(getVenuesLambda)
+    cluster.grantDataApiAccess(getVenueByIdLambda)
+    cluster.grantDataApiAccess(getVenuesLambda)
+    cluster.grantDataApiAccess(createVenueLambda)
+    cluster.grantDataApiAccess(UpdateVenueLambda)
+    cluster.grantDataApiAccess(deleteVenueLambda)
+
+    // Gigs lambda permissions
+    cluster.grantDataApiAccess(getGigByIdLambda)
+    cluster.grantDataApiAccess(getGigsLambda)
+    cluster.grantDataApiAccess(getGigsByVenueLambda)
+    cluster.grantDataApiAccess(gigApproveLambda)
+    cluster.grantDataApiAccess(gigDenyLambda)
+
+    const venuesResource = api.root.addResource('venues')
+    venuesResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getVenuesLambda, { proxy: true }),
+    )
+
+    const venuesIdResource = venuesResource.addResource('{venue_id}')
+
+    venuesIdResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getVenueByIdLambda, { proxy: true }),
+    )
+
+    venuesResource.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(createVenueLambda, { proxy: true }),
+    )
+
+    venuesResource.addMethod(
+      'PUT',
+      new apigw.LambdaIntegration(UpdateVenueLambda, { proxy: true }),
+    )
+
+    venuesResource.addMethod(
+      'DELETE',
+      new apigw.LambdaIntegration(deleteVenueLambda, { proxy: true }),
+    )
 
     // const getGigsApi = api.root.addResource('venues')
     // getGigsApi.addMethod(
@@ -213,153 +375,16 @@ new cdk.CfnOutput(this, 'PrettyApiUrl', {
   
 )
 
-//base url 
-const zone = route53.HostedZone.fromLookup(this, 'zone', {
-  domainName: 'sot-apr-23.com'
-})
+  //base url 
+  const zone = route53.HostedZone.fromLookup(this, 'zone', {
+    domainName: 'sot-apr-23.com'
+  })
 
 new route53.CnameRecord(this, 'client-record', {
   zone,
   domainName: frontendDistribution.domainName,
   recordName: domainName,
 })
-
-
-const lambdaEnvVars = {
-  NODE_ENV: 'production',
-  // AWS specific var to reuse TCP connection
-  AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1', 
-}
-
-const bundling = {
-  externalModules: ['aws-sdk'],
-}
-
-// lambda function definition
-
-
-const getVenuesLambda = new nodejs.NodejsFunction(this, 'venues-get-lambda',
-{
-  functionName: `${props.subDomain}-venues-get-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'getVenuesHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const getVenueByIdLambda = new nodejs.NodejsFunction(this, 'venues-get-by-Id-lambda',
-{
-  functionName: `${props.subDomain}-venues-get-by-Id-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'getVenuesByIdHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-    
-const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
-{
-  functionName: `${props.subDomain}-create-venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'createVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
-{
-  functionName: `${props.subDomain}-update-venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'updateVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-
-const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
-{
-  functionName: `${props.subDomain}-delete-venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'deleteVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
-{
-  functionName: `${props.subDomain}-get-gigs-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'getGigsHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
-{
-  functionName: `${props.subDomain}-get-gig-by-Id-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'getGigByIdHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-lambda',
-{
-  functionName: `${props.subDomain}-get-gig-by-Venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'getGigsByVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
-{
-  functionName: `${props.subDomain}-gig-approve-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'gigApproveHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
-{
-  functionName: `${props.subDomain}-gig-deny-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'gigDenyHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  bundling,
-}
-)
-
-
   }
 }
 

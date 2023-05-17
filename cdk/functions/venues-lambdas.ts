@@ -16,7 +16,7 @@ import {
 } from './venues'
 
 
-
+export const healthcheck = async (): LambdaResult => responseToApiGw(200, 'API is OK')
 
 export const getVenuesHandler = async (): LambdaResult => {
     console.log('GET venues/');

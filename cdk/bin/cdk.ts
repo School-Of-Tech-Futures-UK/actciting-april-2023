@@ -10,7 +10,7 @@ new CdkStack(app, 'CdkStack', {
     region: 'eu-west-2'
   },
   certArn: 'arn:aws:acm:us-east-1:645438430936:certificate/035958ff-72c4-4f4d-948c-4bc92f3e7786',
-  clusterArn: cdk.Fn.importValue('ClusterArn'),
-  secretArn: cdk.Fn.importValue('SecretArn'),
-  subDomain: ''
+  clusterArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
+  secretArn: 'arn:aws:secretsmanager:eu-west-2:645438430936:secret:rdsclusterSecret5F22C2CE-p8xEcaDMv252-xYLNp0',
+  subDomain: 'actciting'
 });
