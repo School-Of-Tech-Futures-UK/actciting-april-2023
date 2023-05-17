@@ -41,7 +41,7 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
       return responseToApiGw(200, venueById)
 
     } catch (error){
-        console.log('Error thrown in getVenues: ', error)
+        console.log('Error thrown in getVenueById: ', error)
         return responseToApiGw(500, 'Error getting a venue')
     }
 };
@@ -73,7 +73,7 @@ export const updateVenueHandler = async (event: LambdaEvent): LambdaResult => {
 
     }
     catch(error){
-        console.log('Error thrown in createVenue: ', error)
+        console.log('Error thrown in updateVenue: ', error)
         return responseToApiGw(500, 'Error getting updating venue')
     }
     };
@@ -90,7 +90,7 @@ export const updateVenueHandler = async (event: LambdaEvent): LambdaResult => {
           return responseToApiGw(200, venueById)
     
         } catch (error){
-            console.log('Error thrown in getVenues: ', error)
-            return responseToApiGw(500, 'Error getting a venue')
+            console.log('Error thrown in deleteVenue: ', error)
+            return responseToApiGw(500, 'Error when deleting a venue ')
         }
         };
