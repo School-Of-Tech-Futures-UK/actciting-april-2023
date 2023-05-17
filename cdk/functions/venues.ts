@@ -1,8 +1,15 @@
-import client from 'data-api-client'
+import client = require('data-api-client')
+
+// const connection = client({
+//   secretArn:  'arn:aws:secretsmanager:eu-west-2:645438430936:secret:rdsclusterSecret5F22C2CE-p8xEcaDMv252-xYLNp0',
+//   resourceArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
+//   database: 'dev'
+// })
+
 const connection = client({
-  secretArn:  'arn:aws:secretsmanager:eu-west-2:645438430936:secret:rdsclusterSecret5F22C2CE-p8xEcaDMv252-xYLNp0',
-  resourceArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
-  database: 'actsent-stack-rdscluster9d572005-rf41aba7zoc9'
+  secretArn: process.env.SECRET_ARN || 'NOT_SET',
+  resourceArn: process.env.CLUSTER_ARN || 'NOT_SET',
+  database: process.env.DATABASE_NAME || 'NOT_SET'
 })
 
 export const getVenues = async () => {
@@ -11,7 +18,7 @@ export const getVenues = async () => {
       const results = await connection.query(
         'SELECT * FROM venues ORDER BY venue_id ASC;'
       )
-      return results.rows;
+      return results.records;
     } catch (err) {
       throw err;
     }
@@ -25,7 +32,7 @@ export const getVenues = async () => {
         {venue_id}
       )
   
-      return results.rows;
+      return results.records;
   
     } catch (error) {
       throw error
@@ -41,7 +48,7 @@ export const getVenues = async () => {
         'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
         {...venueData}
       )
-      const message = `createVenue: venue added with ID: ${results.rows[0].venue_id}`
+      const message = `createVenue: venue added with ID: ${results.records[0].venue_id}`
       console.log(message)
       return(message)
     } catch (error) {
@@ -52,12 +59,12 @@ export const getVenues = async () => {
   export const updateVenue = async (venueData:any) => {
 
     try {
-      const results = await connection().query(
+      const results = await connection.query(
         
         'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
         {...venueData}
       )
-      const message = `updateVenue: modified with ID: ${results.rows[0].venue_id}`
+      const message = `updateVenue: modified with ID: ${results.records[0].venue_id}`
       console.log(message)
       return(message)
     } catch (error) {
@@ -68,11 +75,11 @@ export const getVenues = async () => {
   export const deleteVenue = async (venue_id: any) => {
 
     try {
-      const results = await connection().query(
+      const results = await connection.query(
         'DELETE FROM venues WHERE venue_id = :venue_id:;',
         {venue_id}
       )
-      const message = `deleteVenue: venue deleted with ID: ${results.rows[0].venue_id}`
+      const message = `deleteVenue: venue deleted with ID: ${results.records[0].venue_id}`
       console.log(message)
       return(message)
   
