@@ -16,6 +16,8 @@ import {
 } from './venues'
 
 
+
+
 export const getVenuesHandler = async (): LambdaResult => {
     console.log('GET venues/');
   

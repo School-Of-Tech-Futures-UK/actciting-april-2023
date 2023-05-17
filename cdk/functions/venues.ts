@@ -1,3 +1,9 @@
+import client from 'data-api-client'
+const connection = client({
+  secretArn:  'arn:aws:secretsmanager:eu-west-2:645438430936:secret:rdsclusterSecret5F22C2CE-p8xEcaDMv252-xYLNp0',
+  resourceArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
+  database: 'actsent-stack-rdscluster9d572005-rf41aba7zoc9'
+})
 
 export const getVenues = async () => {
     console.log('getVenues() called');
@@ -15,8 +21,8 @@ export const getVenues = async () => {
 
     try {
       const results = await connection.query(
-        'SELECT * FROM venues WHERE venue_id = $1;',
-        [venue_id]
+        'SELECT * FROM venues WHERE venue_id = venue_id;',
+        {venue_id}
       )
   
       return results.rows;
@@ -31,7 +37,7 @@ export const getVenues = async () => {
  
     try {
       const results = await connection.query(
-        //'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING venue_id;',
+
         'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
         {...venueData}
       )
@@ -48,7 +54,7 @@ export const getVenues = async () => {
     try {
       const results = await connection().query(
         
-        'UPDATE venues SET name = $1, capacity = $2, address=$3, geolocation=$4, image=$5, email=$6, start_date=$7, end_date=$8 WHERE venue_id = $9;',
+        'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
         {...venueData}
       )
       const message = `updateVenue: modified with ID: ${results.rows[0].venue_id}`
@@ -63,8 +69,8 @@ export const getVenues = async () => {
 
     try {
       const results = await connection().query(
-        'DELETE FROM venues WHERE venue_id = $1;',
-        [venue_id]
+        'DELETE FROM venues WHERE venue_id = :venue_id:;',
+        {venue_id}
       )
       const message = `deleteVenue: venue deleted with ID: ${results.rows[0].venue_id}`
       console.log(message)
