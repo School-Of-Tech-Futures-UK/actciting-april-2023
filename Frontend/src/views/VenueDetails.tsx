@@ -8,7 +8,7 @@ import ViewGigList from '../components/GigRequestLists';
 
 
 const deleteHandler = (id:any) => {
-  fetch(`http://localhost:3000/venue/${id}`, {
+  fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues/${id}`, {
     method: 'DELETE'
   })
     .then(response => {
@@ -33,13 +33,13 @@ const VenueDetails = () => {
     }    
      
     const fetchVenues = async () => {
-        const results = await fetch('http://localhost:3000/venue/'+id)
+        const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues/${id}`)
         const data = await results.json()
         return data
     }
 
     const fetchGigs = async () => {
-      const results = await fetch('http://localhost:3000/gigs-by-venue/'+id)
+      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gigs-by-venue/${id}`)
       const data = await results.json()
       return data
     }

@@ -22,7 +22,7 @@ export const GigRequests = (props: ViewGig) => {
     };
   
     const ApproveGig = async () => {
-      const results = await fetch('http://localhost:3000/gig-approve/'+props.gig_id , {method: 'PUT'})
+      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gig-approve/${props.gig_id}` , {method: 'PUT'})
       const data = await results.json()
       return data
     }
@@ -32,7 +32,7 @@ export const GigRequests = (props: ViewGig) => {
     };
     
     const DenyGig = async () => {
-      const results = await fetch('http://localhost:3000/gig-deny/'+props.gig_id, {method: 'PUT'})
+      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gig-deny/${props.gig_id}`, {method: 'PUT'})
       const data = await results.json()
       return data
     }
