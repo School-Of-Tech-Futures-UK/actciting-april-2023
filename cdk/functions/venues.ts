@@ -28,7 +28,7 @@ export const getVenues = async () => {
 
     try {
       const results = await connection.query(
-        'SELECT * FROM venues WHERE venue_id = venue_id;',
+        'SELECT * FROM venues WHERE venue_id = venue_id:;',
         {venue_id}
       )
   
