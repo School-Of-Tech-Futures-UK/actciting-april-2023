@@ -266,35 +266,35 @@ const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
       new apigw.LambdaIntegration(deleteVenueLambda, { proxy: true }),
     )
 
-    // const getGigsApi = api.root.addResource('venues')
-    // getGigsApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigsLambda, { proxy: true }),
-    // )
+    const getGigsApi = api.root.addResource('venues')
+    getGigsApi.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigsLambda, { proxy: true }),
+    )
 
-    // const getGigByIdApi = api.root.addResource('venues')
-    // getGigByIdApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigByIdLambda, { proxy: true }),
-    // )
+    const getGigByIdApi = api.root.addResource('venues')
+    getGigByIdApi.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigByIdLambda, { proxy: true }),
+    )
 
-    // const getGigsByVenueApi = api.root.addResource('venues')
-    // getGigsByVenueApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigsByVenueLambda, { proxy: true }),
-    // )
+    const getGigsByVenueApi = api.root.addResource('venues')
+    getGigsByVenueApi.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigsByVenueLambda, { proxy: true }),
+    )
 
-    // const postGigApproveApi = api.root.addResource('venues')
-    // postGigApproveApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postGigApproveLambda, { proxy: true }),
-    // )
+    const postGigApproveApi = api.root.addResource('venues')
+    postGigApproveApi.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(postGigApproveLambda, { proxy: true }),
+    )
 
-    // const postGigDenyApi = api.root.addResource('venues')
-    // postGigDenyApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postGigDenyLambda, { proxy: true }),
-    // )
+    const postGigDenyApi = api.root.addResource('venues')
+    postGigDenyApi.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(postGigDenyLambda, { proxy: true }),
+    )
 
   //Deployment 
   new s3Deployment.BucketDeployment(this, 'frontend-deployment', {
