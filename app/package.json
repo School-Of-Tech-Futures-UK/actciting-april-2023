@@ -6,7 +6,7 @@
     "scripts": {
         "test": "jest",
         "start": "npx ts-node server.ts",
-        "stop": "pkill MyExpressApp",
+        "stop": "kill MyExpressApp",
         "dev": "nodemon server.ts &"
     },
     "author": "",

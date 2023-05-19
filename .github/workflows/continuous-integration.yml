@@ -1,0 +1,59 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      # - '*'
+      - '!main'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: npm make package-lock if missing
+      working-directory: ./Frontend
+      run: npm i --package-lock-only
+
+    - name: npm ci
+      working-directory: ./Frontend
+      run: npm ci
+
+    - name: npm build
+      working-directory: ./Frontend
+      run: npm run build --if-present
+
+    # - name: npm test
+    #   working-directory: ./Frontend
+    #   run: npm test
+
+    - name: npm make package-lock if missing
+      working-directory: ./app
+      run: npm i --package-lock-only
+
+    - name: npm ci
+      working-directory: ./app
+      run: npm ci
+
+    # - name: npm build
+    #   working-directory: ./app
+    #   run: npm run build --if-present
+
+    - name: npm test
+      working-directory: ./app
+      run: npm test
