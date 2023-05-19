@@ -266,35 +266,50 @@ const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
       new apigw.LambdaIntegration(deleteVenueLambda, { proxy: true }),
     )
 
-    // const getGigsApi = api.root.addResource('venues')
-    // getGigsApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigsLambda, { proxy: true }),
-    // )
 
-    // const getGigByIdApi = api.root.addResource('venues')
-    // getGigByIdApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigByIdLambda, { proxy: true }),
-    // )
+    // /gigs/id/venue/id
 
-    // const getGigsByVenueApi = api.root.addResource('venues')
-    // getGigsByVenueApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigsByVenueLambda, { proxy: true }),
-    // )
+    // /gigs-by-venue api.root.addResource('gigs-by-venue')
+    // /gigs-by-venue/:id gigByVenueResource('{venue_id}')
 
-    // const postGigApproveApi = api.root.addResource('venues')
-    // postGigApproveApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postGigApproveLambda, { proxy: true }),
-    // )
 
-    // const postGigDenyApi = api.root.addResource('venues')
-    // postGigDenyApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postGigDenyLambda, { proxy: true }),
-    // )
+    // Get all gigs gigs/
+    const gigsResource = api.root.addResource('gigs')
+    gigsResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigsLambda, { proxy: true }),
+    )
+
+    // Gigs by id GET gigs/id:
+    const gigsIdResource = gigsResource.addResource('{request_id}')
+    gigsIdResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigByIdLambda, { proxy: true }),
+    )
+
+    // Get gigs by venue gigs-by-venue/id:
+    const gigsByVenueResource = api.root.addResource('gigs-by-venue')
+    const gigsByVenueIdResource = gigsByVenueResource.addResource('{request_id}')
+    gigsByVenueIdResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigsByVenueLambda, { proxy: true }),
+    )
+
+    const approveGigsResource = api.root.addResource('gig-approve')
+    const gigToBeApprovedResource = approveGigsResource.addResource('{request_id}')
+      //PUT gig-approve/id:
+      gigToBeApprovedResource.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(gigApproveLambda, { proxy: true }),
+    )
+
+    const denyGigResource = api.root.addResource('gig-deny')
+    const gigToBeDeniedResource = denyGigResource.addResource('{request_id}')
+      //'PUT gig-deny/id:'
+      gigToBeDeniedResource.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(gigDenyLambda, { proxy: true }),
+    )
 
   //Deployment 
   new s3Deployment.BucketDeployment(this, 'frontend-deployment', {
