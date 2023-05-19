@@ -33,7 +33,7 @@ import {
     };
     
   export const getGigByIdHandler = async (event: LambdaEvent): LambdaResult => {
-      console.log('GET gig/id:');
+      console.log('GET gigs/id:');
   
       const urlParams = event.pathParameters || {}
       const gig_id = urlParams.gig_id || '-1'
