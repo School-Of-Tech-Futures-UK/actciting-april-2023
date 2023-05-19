@@ -11,7 +11,7 @@ export type VenueItemProps = {
 }
 
 const VenueItem = (props: VenueItemProps) => {
-    const baseUrl = 'http://localhost:3001'
+    const baseUrl = `${process.env.REACT_APP_BASE_ADDRESS}`
     const fullUrl = baseUrl + '/' + props.venueId
 
     return (

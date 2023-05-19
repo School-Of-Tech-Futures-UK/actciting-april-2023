@@ -18,7 +18,7 @@ const AddVenue = (props: AddVenueProps) => {
 
 
     const clickHandler = () => {
-        fetch('http://localhost:3000/venues', {
+        fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
