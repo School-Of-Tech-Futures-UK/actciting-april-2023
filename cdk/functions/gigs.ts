@@ -28,7 +28,7 @@ export const getGigs = async () => {
 
     try {
       const results = await connection.query(
-        'SELECT * FROM venue_requests WHERE request_id = request_id:;',
+        'SELECT * FROM venue_requests WHERE request_id = :request_id;',
         {request_id}
       )
   
@@ -43,7 +43,7 @@ export const getGigs = async () => {
 
     try {
       const results = await connection.query(
-        'SELECT * FROM venue_requests WHERE venue_id = request_id:;',
+        'SELECT * FROM venue_requests WHERE venue_id = :request_id;',
         {request_id}
       )
   
@@ -61,7 +61,7 @@ export const getGigs = async () => {
     try {
       const results = await connection.query(
         
-        'UPDATE venue_requests SET approval_status = true WHERE request_id=request_id: ;',
+        'UPDATE venue_requests SET approval_status = true WHERE request_id=:request_id ;',
         {request_id}
       )
       const message = `gigApproved: modified with ID: ${results.records}`
@@ -77,7 +77,7 @@ export const getGigs = async () => {
     try {
       const results = await connection.query(
         
-        'UPDATE venue_requests SET approval_status = false WHERE request_id=request_id: ;',
+        'UPDATE venue_requests SET approval_status = false WHERE request_id=:request_id ;',
         {request_id}
       )
       const message = `gigDenied: modified with ID: ${results.records}`

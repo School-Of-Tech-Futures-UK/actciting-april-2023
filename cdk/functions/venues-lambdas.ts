@@ -110,7 +110,7 @@ export const updateVenueHandler = async (event: LambdaEvent): LambdaResult => {
         console.log('DELETE venue/id:');
 
         const urlParams = event.pathParameters || {}
-        const venue_id = urlParams.venue_id || '-1'
+        const venue_id = Number(urlParams.venue_id)|| '-1'
     
         console.log(`getVenueById: venue_id=${venue_id}`)
         try{
