@@ -75,9 +75,17 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
         if ( postDataJson.start_date===undefined|| Number.isNaN(parseInt(postDataJson.start_date))){isValid=false;test+="Startdate"}
         if ( postDataJson.end_date ===undefined|| Number.isNaN(parseInt(postDataJson.end_date))){isValid=false;test+="enddATE"}
         console.log(test,isValid)
-
+        const parsedData = {
+          name: postDataJson.name,
+          capacity: Number(postDataJson.capacity),
+          address: postDataJson.address,
+          geolocation: postDataJson.geolocation,
+          image : postDataJson.image,
+          email: postDataJson.email,
+          start_date: Number(postDataJson.start_date),
+          end_date: Number(postDataJson.end_date)}
         if (isValid){
-          const postResponse = await createVenue(postDataJson)
+          const postResponse = await createVenue(parsedData)
           const result = responseToApiGw(200, postResponse)
           return result
         }else{
@@ -112,7 +120,7 @@ export const updateVenueHandler = async (event: LambdaEvent): LambdaResult => {
         console.log('DELETE venue/id:');
 
         const urlParams = event.pathParameters || {}
-        const venue_id = urlParams.venue_id || '-1'
+        const venue_id = Number(urlParams.venue_id)|| '-1'
     
         console.log(`getVenueById: venue_id=${venue_id}`)
         try{

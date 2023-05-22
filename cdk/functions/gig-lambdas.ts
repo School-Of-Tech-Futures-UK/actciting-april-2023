@@ -36,11 +36,11 @@ import {
       console.log('GET gigs/id:');
   
       const urlParams = event.pathParameters || {}
-      const gig_id = urlParams.gig_id || '-1'
+      const request_id = Number(urlParams.request_id)|| '-1'
   
-      console.log(`getGigById: Gig_id=${gig_id}`)
+      console.log(`getGigById: request_id=${request_id}`)
       try{
-        const gigById = await getGigById(gig_id);
+        const gigById = await getGigById(request_id);
         return responseToApiGw(200, gigById)
   
       } catch (error){
@@ -53,11 +53,11 @@ import {
     console.log('GET gigs-by-venue/id:');
 
     const urlParams = event.pathParameters || {}
-    const gig_id = urlParams.gig_id || '-1'
+    const request_id = Number(urlParams.request_id)|| '-1'
 
-    console.log(`getGigById: Gig_id=${gig_id}`)
+    console.log(`getGigById: request_id=${request_id}`)
     try{
-      const gigsByVenue = await getGigsByVenue(gig_id);
+      const gigsByVenue = await getGigsByVenue(request_id);
       return responseToApiGw(200, gigsByVenue)
 
     } catch (error){
@@ -69,9 +69,9 @@ import {
   export const gigApproveHandler = async (event: LambdaEvent): LambdaResult => {
       console.log('PUT gig-approve/id:');
       const urlParams = event.pathParameters || {}
-      const gig_id = urlParams.gig_id || '-1'
+      const request_id = Number(urlParams.request_id)|| '-1'
       try{
-        const gigApproval = await gigApprove(gig_id);
+        const gigApproval = await gigApprove(request_id);
         return responseToApiGw(200, gigApproval)
   
       }
@@ -84,9 +84,9 @@ import {
       export const gigDenyeHandler = async (event: LambdaEvent): LambdaResult => {
         console.log('PUT gig-deny/id:');
         const urlParams = event.pathParameters || {}
-        const gig_id = urlParams.gig_id || '-1'
+        const request_id = Number(urlParams.request_id)|| '-1'
         try{
-          const gigDenial = await gigDeny(gig_id);
+          const gigDenial = await gigDeny(request_id);
           return responseToApiGw(200, gigDenial)
     
         }
