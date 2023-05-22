@@ -15,6 +15,17 @@ import {
     deleteVenue
 } from './venues'
 
+export type VenueItemProps = {
+  name: string,
+  capacity: number,
+  address: string,
+  geolocation: string,
+  image: string,
+  email: string,
+  startDate: number,
+  endDate: number
+}
+
 
 export const healthcheck = async (): LambdaResult => responseToApiGw(200, 'API is OK')
 
@@ -49,14 +60,28 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
 };
 
 export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
-    console.log('POST venue/id:');
+    console.log('POST venues/');
     try{
         const postDataText = event.body || '{}'
-        const postDataJson = JSON.parse(postDataText)
-        const postResponse = await createVenue(postDataJson)
-        const result = responseToApiGw(200, postResponse)
-        return result
-  
+        const postDataJson = JSON.parse(postDataText) as VenueItemProps
+        let isValid = true
+
+        if (typeof postDataJson.name !=='string'|| postDataJson.name.length === 0){isValid=false}
+        if (typeof postDataJson.capacity !=='number'||postDataJson.capacity.toString().length === 0){isValid=false}
+        if (typeof postDataJson.address !=='string'|| postDataJson.address.length === 0){isValid=false}
+        if (typeof postDataJson.geolocation !=='string'|| postDataJson.geolocation.length === 0){isValid=false}
+        if (typeof postDataJson.image!=='string'|| postDataJson.image.length === 0){isValid=false}
+        if (typeof postDataJson.email !=='string' || postDataJson.email.length === 0){isValid=false}
+        if (typeof postDataJson.startDate!=='number'|| postDataJson.startDate.toString().length === 0){isValid=false}
+        if (typeof postDataJson.endDate !=='number'|| postDataJson.endDate.toString().length === 0){isValid=false}
+        if (isValid){
+         // const postResponse = await createVenue(postDataJson)
+          const result = responseToApiGw(200, "success")
+          return result
+        }else{ return responseToApiGw(400, 'error')}
+
+
+        
     }
     catch(error){
       console.log('Error thrown in createVenue: ', error)

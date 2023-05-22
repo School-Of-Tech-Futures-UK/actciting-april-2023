@@ -45,7 +45,7 @@ export const getVenues = async () => {
     try {
       const results = await connection.query(
 
-        'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
+        'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date ) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
         {...venueData}
       )
       const message = `createVenue: venue added with ID: ${results.records[0].venue_id}`
