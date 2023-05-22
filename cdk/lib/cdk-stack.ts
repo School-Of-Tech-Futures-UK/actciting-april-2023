@@ -11,6 +11,7 @@ import * as route53 from 'aws-cdk-lib/aws-route53'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as nodejs from 'aws-cdk-lib/aws-lambda-nodejs'
 import * as rds from 'aws-cdk-lib/aws-rds'
+import { getGigs } from '../functions/gigs';
 
 export interface ActcitingSettings extends cdk.StackProps {
   certArn: string,
@@ -120,7 +121,8 @@ const getVenueByIdLambda = new nodejs.NodejsFunction(this, 'venues-get-by-Id-lam
   timeout: cdk.Duration.seconds(30),
   }
 )
-    
+getVenueByIdLambda.addToRolePolicy(secretsManagerPermissions)
+
 const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
 {
   functionName: `${props.subDomain}-create-venue-lambda`,
@@ -131,7 +133,7 @@ const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
   timeout: cdk.Duration.seconds(30),
   }
 )
-
+createVenueLambda.addToRolePolicy(secretsManagerPermissions)
 const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
 {
   functionName: `${props.subDomain}-update-venue-lambda`,
@@ -144,6 +146,8 @@ const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
 )
 
 
+UpdateVenueLambda.addToRolePolicy(secretsManagerPermissions)
+
 const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
 {
   functionName: `${props.subDomain}-delete-venue-lambda`,
@@ -155,6 +159,7 @@ const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
   }
 )
 
+deleteVenueLambda.addToRolePolicy(secretsManagerPermissions)
 const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
 {
   functionName: `${props.subDomain}-get-gigs-lambda`,
@@ -166,6 +171,7 @@ const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
   }
 )
 
+getGigsLambda.addToRolePolicy(secretsManagerPermissions)
 const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
 {
   functionName: `${props.subDomain}-get-gig-by-Id-lambda`,
@@ -177,6 +183,7 @@ const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
   }
 )
 
+getGigByIdLambda.addToRolePolicy(secretsManagerPermissions)
 const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-lambda',
 {
   functionName: `${props.subDomain}-get-gig-by-Venue-lambda`,
@@ -188,6 +195,7 @@ const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-l
   }
 )
 
+getGigsByVenueLambda.addToRolePolicy(secretsManagerPermissions)
 const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
 {
   functionName: `${props.subDomain}-gig-approve-lambda`,
@@ -199,6 +207,7 @@ const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
   }
 )
 
+gigApproveLambda.addToRolePolicy(secretsManagerPermissions)
 const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
 {
   functionName: `${props.subDomain}-gig-deny-lambda`,
@@ -210,6 +219,7 @@ const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
   }
 )
 
+gigDenyLambda.addToRolePolicy(secretsManagerPermissions)
     const healthcheckLambda = new nodejs.NodejsFunction(this, 'healthcheck-lambda', {
       functionName: `${props.subDomain}-healthcheck-lambda`,
       runtime: lambda.Runtime.NODEJS_18_X,
