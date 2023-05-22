@@ -46,7 +46,7 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
     console.log('GET venue/id:');
 
     const urlParams = event.pathParameters || {}
-    const venue_id = urlParams.venue_id || '-1'
+    const venue_id = Number(urlParams.venue_id)|| '-1'
 
     console.log(`getVenueById: venue_id=${venue_id}`)
     try{
@@ -63,22 +63,23 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
     console.log('POST venues/');
     try{
         const postDataText = event.body || '{}'
-        const postDataJson = JSON.parse(postDataText) as VenueItemProps
+        const postDataJson = JSON.parse(postDataText) 
         let isValid = true
-
-        if (typeof postDataJson.name !=='string'|| postDataJson.name.length === 0){isValid=false}
-        if (typeof postDataJson.capacity !=='number'||postDataJson.capacity.toString().length === 0){isValid=false}
-        if (typeof postDataJson.address !=='string'|| postDataJson.address.length === 0){isValid=false}
-        if (typeof postDataJson.geolocation !=='string'|| postDataJson.geolocation.length === 0){isValid=false}
-        if (typeof postDataJson.image!=='string'|| postDataJson.image.length === 0){isValid=false}
-        if (typeof postDataJson.email !=='string' || postDataJson.email.length === 0){isValid=false}
-        if (typeof postDataJson.startDate!=='number'|| postDataJson.startDate.toString().length === 0){isValid=false}
-        if (typeof postDataJson.endDate !=='number'|| postDataJson.endDate.toString().length === 0){isValid=false}
+        let test = "eroor message"
+        if (postDataJson.name === undefined || postDataJson.name.length === 0){isValid=false; }
+        if (postDataJson.capacity ===undefined|| Number.isNaN(parseInt(postDataJson.capacity))){isValid=false;}     
+        if (typeof postDataJson.address ===undefined|| postDataJson.address.length === 0){isValid=false;}
+        if (typeof postDataJson.geolocation ===undefined|| postDataJson.geolocation.length === 0){isValid=false;}
+        if (typeof postDataJson.image===undefined|| postDataJson.image.length === 0){isValid=false;}
+        if (typeof postDataJson.email ===undefined || postDataJson.email.length === 0){isValid=false;}
+        if (typeof postDataJson.startDate===undefined|| Number.isNaN(parseInt(postDataJson.startDate))){isValid=false;}
+        if (typeof postDataJson.endDate ===undefined|| Number.isNaN(parseInt(postDataJson.endDate))){isValid=false;}
         if (isValid){
-         // const postResponse = await createVenue(postDataJson)
-          const result = responseToApiGw(200, "success")
+          const postResponse = await createVenue(postDataJson)
+          const result = responseToApiGw(200, postResponse)
           return result
-        }else{ return responseToApiGw(400, 'error')}
+        }else{
+         return responseToApiGw(400, test)}
 
 
         
