@@ -66,14 +66,16 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
         const postDataJson = JSON.parse(postDataText) 
         let isValid = true
         let test = "eroor message"
-        if (postDataJson.name === undefined || postDataJson.name.length === 0){isValid=false; }
-        if (postDataJson.capacity ===undefined|| Number.isNaN(parseInt(postDataJson.capacity))){isValid=false;}     
-        if (typeof postDataJson.address ===undefined|| postDataJson.address.length === 0){isValid=false;}
-        if (typeof postDataJson.geolocation ===undefined|| postDataJson.geolocation.length === 0){isValid=false;}
-        if (typeof postDataJson.image===undefined|| postDataJson.image.length === 0){isValid=false;}
-        if (typeof postDataJson.email ===undefined || postDataJson.email.length === 0){isValid=false;}
-        if (typeof postDataJson.startDate===undefined|| Number.isNaN(parseInt(postDataJson.startDate))){isValid=false;}
-        if (typeof postDataJson.endDate ===undefined|| Number.isNaN(parseInt(postDataJson.endDate))){isValid=false;}
+        if (postDataJson.name === undefined || postDataJson.name.length === 0){isValid=false;test+="name" }
+        if (postDataJson.capacity ===undefined|| Number.isNaN(parseInt(postDataJson.capacity))){isValid=false;test+="capacity"}     
+        if ( postDataJson.address ===undefined|| postDataJson.address.length === 0){isValid=false;test+="address"}
+        if ( postDataJson.geolocation ===undefined|| postDataJson.geolocation.length === 0){isValid=false;test+="geolocation"}
+        if ( postDataJson.image===undefined|| postDataJson.image.length === 0){isValid=false;test+="image"}
+        if ( postDataJson.email ===undefined || postDataJson.email.length === 0){isValid=false;test+="email"}
+        if ( postDataJson.start_date===undefined|| Number.isNaN(parseInt(postDataJson.start_date))){isValid=false;test+="Startdate"}
+        if ( postDataJson.end_date ===undefined|| Number.isNaN(parseInt(postDataJson.end_date))){isValid=false;test+="enddATE"}
+        console.log(test,isValid)
+
         if (isValid){
           const postResponse = await createVenue(postDataJson)
           const result = responseToApiGw(200, postResponse)
