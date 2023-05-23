@@ -58,7 +58,7 @@ export const createVenue = async (venueData: VenueData) => {
   try {
     const results = await connection.query(
 
-      'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
+      'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date ) '+ ' VALUES (:name, :capacity, :address, :geolocation, :image, :email, :start_date, :end_date) RETURNING *;',
       {...venueData}
     )
     const message = `createVenue: venue added with ID: ${results.records[0].venue_id}`
@@ -75,7 +75,7 @@ export const updateVenue = async (venueData:VenueData) => {
   try {
     const results = await connection.query(
         
-      'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
+      'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date ) '+ ' VALUES (:name, :capacity, :address, :geolocation, :image, :email, :start_date, :end_date) RETURNING *;',
       {...venueData}
     )
     const message = `updateVenue: modified with ID: ${results.records[0].venue_id}`
