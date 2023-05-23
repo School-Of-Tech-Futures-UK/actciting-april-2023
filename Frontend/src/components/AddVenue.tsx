@@ -50,7 +50,7 @@ const AddVenue = (props: AddVenueProps) => {
     }
 
     return (
-      <div className="p-5 bg-light rounded-3">
+      <div className="p-5 bg-light">
         <div className="container-fluid py-5">
           <h1 className="display-5 fw-bold">Add a New Venue</h1>
           <p className="fs-4">Don't see your Venue? Add it now!</p>
@@ -78,7 +78,7 @@ const AddVenue = (props: AddVenueProps) => {
                 <label className="fs-5" htmlFor="venueEndDAte"> Venue End Date:</label>
                 <input className="form-control" type="text" id = "venueEndDate"value={EndVal} onInput={(event) => setEnd((event.target as HTMLInputElement).value)} placeholder="DDMMYYYY"></input>
 
-                <button className='btn btn-primary my-2' onClick={clickHandler}>Submit</button>
+                <button className='btn btn-primary my-2 btn-lg btn-dark' onClick={clickHandler}>Submit</button>
             </div>
         </div>
       </div>

@@ -23,8 +23,7 @@ const Navbar = () => {
             </a>
             <ul className="nav nav-pills">
                 <li className="nav-item"><a href="/" className="nav-link fw-bold text-light">Home</a></li>
-                <li className="nav-item"><a href="About" className="nav-link fw-bold text-light">About</a></li>
-                <li className="nav-item"><a href="Contact" className="nav-link fw-bold text-light">Contact</a></li>
+                <li className="nav-item"><a href="https://actsent-stack.sot-apr-23.com/" className="nav-link fw-bold text-light">ActSent</a></li>
             </ul>
             </header>
         </div>

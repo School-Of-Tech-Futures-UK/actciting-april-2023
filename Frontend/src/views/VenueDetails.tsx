@@ -57,7 +57,7 @@ const VenueDetails = () => {
         <Navbar/>
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
         <DeleteVenue handleDeleteVenueClick={handleDeleteClick}/>
-        <ViewGigList GigArray={currentGigs} GigIdShow={id} />
+        <ViewGigList GigArray={currentGigs} GigIdShow={id} VenueDetails={currentVenue}/>
         <Footer/>      
         </>
     );

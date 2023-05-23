@@ -36,28 +36,41 @@ export const GigRequests = (props: ViewGig) => {
       return data
     }
     return(
-
-      <div className="col d-flex justify-content-center mb-3">
-            <div className="venueItem card text-center bg-light h-100">
-                <div className="card-body">
-                    <h4 className="card-title">{props.artist}</h4>
-                    <p className="card-text"> Date: {props.date} </p>
-                        <p className="card-text">Genre: {props.artist_genre}</p>
-                        {approvalStatus === null && <p className="card-text">Approval Status: Pending </p> }
-                        {approvalStatus === true && <p className="card-text">Approval Status: Approved </p> }
-                        {approvalStatus === false && <p className="card-text">Approval Status: Denied </p> }
-                        {approvalStatus === null && (
-                      <>
-                        <button className="approval-status-button" onClick={approveEvent}>Approve</button>
-                        <button className="approval-status-button" onClick={denyEvent}>Deny</button>
-                      </>
-                    )}
-                </div>
+      <div className='col'>
+        <div className="card text-center">
+          <h3 className="card-header">{props.artist}</h3>
+          <div className="card-body">
+            <p className="card-text"> Date: {props.date} </p>
+            <p className="card-text">Genre: {props.artist_genre}</p>
+            {approvalStatus === null && <p className="card-text">Approval Status: Pending </p> }
+            {approvalStatus === true && <p className="card-text">Approval Status: Approved </p> }
+            {approvalStatus === false && <p className="card-text">Approval Status: Denied </p> }
+            <button className="approval-status-button btn btn-dark mx-1" onClick={approveEvent}>Approve</button>
+            <button className="approval-status-button btn btn-dark mx-1" onClick={denyEvent}>Deny</button>
+          </div>
+        </div>
+      </div>
+      // <div className="col d-flex justify-content-center mb-3">
+      //       <div className="venueItem card text-center bg-light h-100">
+      //           <div className="card-body">
+      //               <h4 className="card-title">{props.artist}</h4>
+      //               <p className="card-text"> Date: {props.date} </p>
+      //                   <p className="card-text">Genre: {props.artist_genre}</p>
+      //                   {approvalStatus === null && <p className="card-text">Approval Status: Pending </p> }
+      //                   {approvalStatus === true && <p className="card-text">Approval Status: Approved </p> }
+      //                   {approvalStatus === false && <p className="card-text">Approval Status: Denied </p> }
+      //                   {approvalStatus === null && (
+      //                 <>
+      //                   <button className="approval-status-button" onClick={approveEvent}>Approve</button>
+      //                   <button className="approval-status-button" onClick={denyEvent}>Deny</button>
+      //                 </>
+      //               )}
+      //           </div>
  
-            </div>
+      //       </div>
       
 
-      </div>
+      // </div>
 
     );
   };
