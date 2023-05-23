@@ -120,7 +120,8 @@ export class CdkStack extends cdk.Stack {
         timeout: cdk.Duration.seconds(30),
       }
     )
-    
+    getVenueByIdLambda.addToRolePolicy(secretsManagerPermissions)
+
     const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
       {
         functionName: `${props.subDomain}-create-venue-lambda`,
@@ -131,7 +132,7 @@ export class CdkStack extends cdk.Stack {
         timeout: cdk.Duration.seconds(30),
       }
     )
-
+    createVenueLambda.addToRolePolicy(secretsManagerPermissions)
     const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
       {
         functionName: `${props.subDomain}-update-venue-lambda`,
@@ -144,6 +145,8 @@ export class CdkStack extends cdk.Stack {
     )
 
 
+    UpdateVenueLambda.addToRolePolicy(secretsManagerPermissions)
+
     const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
       {
         functionName: `${props.subDomain}-delete-venue-lambda`,
@@ -155,6 +158,7 @@ export class CdkStack extends cdk.Stack {
       }
     )
 
+    deleteVenueLambda.addToRolePolicy(secretsManagerPermissions)
     const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
       {
         functionName: `${props.subDomain}-get-gigs-lambda`,
@@ -166,6 +170,7 @@ export class CdkStack extends cdk.Stack {
       }
     )
 
+    getGigsLambda.addToRolePolicy(secretsManagerPermissions)
     const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
       {
         functionName: `${props.subDomain}-get-gig-by-Id-lambda`,
@@ -177,6 +182,7 @@ export class CdkStack extends cdk.Stack {
       }
     )
 
+    getGigByIdLambda.addToRolePolicy(secretsManagerPermissions)
     const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-lambda',
       {
         functionName: `${props.subDomain}-get-gig-by-Venue-lambda`,
@@ -188,6 +194,7 @@ export class CdkStack extends cdk.Stack {
       }
     )
 
+    getGigsByVenueLambda.addToRolePolicy(secretsManagerPermissions)
     const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
       {
         functionName: `${props.subDomain}-gig-approve-lambda`,
@@ -199,6 +206,7 @@ export class CdkStack extends cdk.Stack {
       }
     )
 
+    gigApproveLambda.addToRolePolicy(secretsManagerPermissions)
     const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
       {
         functionName: `${props.subDomain}-gig-deny-lambda`,
@@ -210,8 +218,7 @@ export class CdkStack extends cdk.Stack {
       }
     )
 
-    
-  
+    gigDenyLambda.addToRolePolicy(secretsManagerPermissions)
 
     const cluster = rds.ServerlessCluster.fromServerlessClusterAttributes(this, 'database-cluster', {
       clusterIdentifier: 'actsent-stack-rdscluster9d572005-rf41aba7zoc9'
@@ -260,35 +267,50 @@ export class CdkStack extends cdk.Stack {
       new apigw.LambdaIntegration(deleteVenueLambda, { proxy: true }),
     )
 
-    // const getGigsApi = api.root.addResource('venues')
-    // getGigsApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigsLambda, { proxy: true }),
-    // )
 
-    // const getGigByIdApi = api.root.addResource('venues')
-    // getGigByIdApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigByIdLambda, { proxy: true }),
-    // )
+    // /gigs/id/venue/id
 
-    // const getGigsByVenueApi = api.root.addResource('venues')
-    // getGigsByVenueApi.addMethod(
-    //   'GET',
-    //   new apigw.LambdaIntegration(getGigsByVenueLambda, { proxy: true }),
-    // )
+    // /gigs-by-venue api.root.addResource('gigs-by-venue')
+    // /gigs-by-venue/:id gigByVenueResource('{venue_id}')
 
-    // const postGigApproveApi = api.root.addResource('venues')
-    // postGigApproveApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postGigApproveLambda, { proxy: true }),
-    // )
 
-    // const postGigDenyApi = api.root.addResource('venues')
-    // postGigDenyApi.addMethod(
-    //   'POST',
-    //   new apigw.LambdaIntegration(postGigDenyLambda, { proxy: true }),
-    // )
+    // Get all gigs gigs/
+    const gigsResource = api.root.addResource('gigs')
+    gigsResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigsLambda, { proxy: true }),
+    )
+
+    // Gigs by id GET gigs/id:
+    const gigsIdResource = gigsResource.addResource('{request_id}')
+    gigsIdResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigByIdLambda, { proxy: true }),
+    )
+
+    // Get gigs by venue gigs-by-venue/id:
+    const gigsByVenueResource = api.root.addResource('gigs-by-venue')
+    const gigsByVenueIdResource = gigsByVenueResource.addResource('{request_id}')
+    gigsByVenueIdResource.addMethod(
+      'GET',
+      new apigw.LambdaIntegration(getGigsByVenueLambda, { proxy: true }),
+    )
+
+    const approveGigsResource = api.root.addResource('gig-approve')
+    const gigToBeApprovedResource = approveGigsResource.addResource('{request_id}')
+    //PUT gig-approve/id:
+    gigToBeApprovedResource.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(gigApproveLambda, { proxy: true }),
+    )
+
+    const denyGigResource = api.root.addResource('gig-deny')
+    const gigToBeDeniedResource = denyGigResource.addResource('{request_id}')
+    //'PUT gig-deny/id:'
+    gigToBeDeniedResource.addMethod(
+      'POST',
+      new apigw.LambdaIntegration(gigDenyLambda, { proxy: true }),
+    )
 
     //Deployment 
     new s3Deployment.BucketDeployment(this, 'frontend-deployment', {
@@ -344,11 +366,12 @@ export class CdkStack extends cdk.Stack {
               function: redirectsFunction,
             },
           ],
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED
         },
         additionalBehaviors: {
           '/api/*': { // must be same as default stage name above in ApiGW
             origin: new origins.HttpOrigin(
-              `${api.restApiId}.execute-api.${props.env.region}.amazonaws.com`,
+              `${api.restApiId}.execute-api.${props.env!.region}.amazonaws.com`, // eslint-disable-line @typescript-eslint/no-non-null-assertion
               {
                 // should be empty so we don't add extra path info 
                 // else it won't match in the API-GW stage

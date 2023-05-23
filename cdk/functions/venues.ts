@@ -5,6 +5,17 @@ import client = require('data-api-client')
 //   resourceArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
 //   database: 'dev'
 // })
+type VenueData = {
+  venueId: number,
+  name: string,
+  capacity: number,
+  address: string,
+  geolocation: string,
+  image: string,
+  email: string,
+  startDate: number,
+  endDate: number
+}
 
 const connection = client({
   secretArn: process.env.SECRET_ARN || 'NOT_SET',
@@ -29,7 +40,7 @@ export const getVenueById = async (venue_id:number) => {
 
   try {
     const results = await connection.query(
-      'SELECT * FROM venues WHERE venue_id = venue_id;',
+      'SELECT * FROM venues WHERE venue_id = :venue_id;',
       {venue_id}
     )
   
@@ -41,7 +52,7 @@ export const getVenueById = async (venue_id:number) => {
   }
 }
 
-export const createVenue = async (venueData:any) => {
+export const createVenue = async (venueData: VenueData) => {
 
  
   try {
@@ -59,7 +70,7 @@ export const createVenue = async (venueData:any) => {
   }
 }
 
-export const updateVenue = async (venueData:any) => {
+export const updateVenue = async (venueData:VenueData) => {
 
   try {
     const results = await connection.query(
@@ -71,7 +82,7 @@ export const updateVenue = async (venueData:any) => {
     console.log(message)
     return(message)
   } catch (error) {
-    console.log('error',error)
+    console.log('error', error)
     throw error
   }
 }

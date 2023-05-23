@@ -12,6 +12,17 @@ import {
   deleteVenue
 } from './venues'
 
+export type VenueItemProps = {
+  name: string,
+  capacity: number,
+  address: string,
+  geolocation: string,
+  image: string,
+  email: string,
+  startDate: number,
+  endDate: number
+}
+
 
 export const healthcheck = async (): LambdaResult => {return responseToApiGw(200, 'API is OK')}
 
@@ -32,7 +43,7 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
   console.log('GET venue/id:')
 
   const urlParams = event.pathParameters || {}
-  const venue_id = urlParams.venue_id || '-1'
+  const venue_id = Number(urlParams.venue_id)|| '-1'
 
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
@@ -46,14 +57,39 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
 }
 
 export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
-  console.log('POST venue/id:')
+  console.log('POST venues/')
   try{
     const postDataText = event.body || '{}'
-    const postDataJson = JSON.parse(postDataText)
-    const postResponse = await createVenue(postDataJson)
-    const result = responseToApiGw(200, postResponse)
-    return result
-  
+    const postDataJson = JSON.parse(postDataText) 
+    let isValid = true
+    let test = 'eroor message'
+    if (postDataJson.name === undefined || postDataJson.name.length === 0){isValid=false;test+='name' }
+    if (postDataJson.capacity ===undefined|| Number.isNaN(parseInt(postDataJson.capacity))){isValid=false;test+='capacity'}     
+    if ( postDataJson.address ===undefined|| postDataJson.address.length === 0){isValid=false;test+='address'}
+    if ( postDataJson.geolocation ===undefined|| postDataJson.geolocation.length === 0){isValid=false;test+='geolocation'}
+    if ( postDataJson.image===undefined|| postDataJson.image.length === 0){isValid=false;test+='image'}
+    if ( postDataJson.email ===undefined || postDataJson.email.length === 0){isValid=false;test+='email'}
+    if ( postDataJson.start_date===undefined|| Number.isNaN(parseInt(postDataJson.start_date))){isValid=false;test+='Startdate'}
+    if ( postDataJson.end_date ===undefined|| Number.isNaN(parseInt(postDataJson.end_date))){isValid=false;test+='enddATE'}
+    console.log(test,isValid)
+    const parsedData = {
+      name: postDataJson.name,
+      capacity: Number(postDataJson.capacity),
+      address: postDataJson.address,
+      geolocation: postDataJson.geolocation,
+      image : postDataJson.image,
+      email: postDataJson.email,
+      start_date: Number(postDataJson.start_date),
+      end_date: Number(postDataJson.end_date)}
+    if (isValid){
+      const postResponse = await createVenue(parsedData)
+      const result = responseToApiGw(200, postResponse)
+      return result
+    }else{
+      return responseToApiGw(400, test)}
+
+
+        
   }
   catch(error){
     console.log('Error thrown in createVenue: ', error)
@@ -81,7 +117,7 @@ export const deleteVenueHandler = async (event: LambdaEvent): LambdaResult => {
   console.log('DELETE venue/id:')
 
   const urlParams = event.pathParameters || {}
-  const venue_id = urlParams.venue_id || '-1'
+  const venue_id = Number(urlParams.venue_id)|| '-1'
     
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
