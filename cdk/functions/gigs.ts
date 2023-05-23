@@ -13,80 +13,85 @@ const connection = client({
 })
 
 export const getGigs = async () => {
-    console.log('getGigs() called');
-    try {
-      const results = await connection.query(
-        'SELECT * FROM venue_requests ORDER BY request_id ASC;'
-      )
-      return results.records;
-    } catch (err) {
-      throw err;
-    }
+  console.log('getGigs() called')
+  try {
+    const results = await connection.query(
+      'SELECT * FROM venue_requests ORDER BY request_id ASC;'
+    )
+    return results.records
+  } catch (err) {
+    console.log('error', err)
+    throw err
   }
+}
 
-  export const getGigById = async (request_id:any) => {
+export const getGigById = async (request_id:number) => {
 
-    try {
-      const results = await connection.query(
-        'SELECT * FROM venue_requests WHERE request_id = request_id:;',
-        {request_id}
-      )
+  try {
+    const results = await connection.query(
+      'SELECT * FROM venue_requests WHERE request_id = :request_id;',
+      {request_id}
+    )
   
-      return results.records;
+    return results.records
   
-    } catch (error) {
-      throw error
-    }
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
 
-  export const getGigsByVenue = async (request_id:any) => {
+export const getGigsByVenue = async (request_id:number) => {
 
-    try {
-      const results = await connection.query(
-        'SELECT * FROM venue_requests WHERE venue_id = request_id:;',
-        {request_id}
-      )
+  try {
+    const results = await connection.query(
+      'SELECT * FROM venue_requests WHERE venue_id = :request_id;',
+      {request_id}
+    )
   
-      return results.records;
+    return results.records
   
-    } catch (error) {
-      throw error
-    }
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
 
 
 
-  export const gigApprove = async (request_id:any) => {
+export const gigApprove = async (request_id: number) => {
 
-    try {
-      const results = await connection.query(
+  try {
+    const results = await connection.query(
         
-        'UPDATE venue_requests SET approval_status = true WHERE request_id=request_id: ;',
-        {request_id}
-      )
-      const message = `gigApproved: modified with ID: ${results.records}`
-      console.log(message)
-      return(message)
-    } catch (error) {
-      throw error
-    }
+      'UPDATE venue_requests SET approval_status = true WHERE request_id=:request_id ;',
+      {request_id}
+    )
+    const message = `gigApproved: modified with ID: ${results.records}`
+    console.log(message)
+    return(message)
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
 
-  export const gigDeny = async (request_id:any) => {
+export const gigDeny = async (request_id: number) => {
 
-    try {
-      const results = await connection.query(
+  try {
+    const results = await connection.query(
         
-        'UPDATE venue_requests SET approval_status = false WHERE request_id=request_id: ;',
-        {request_id}
-      )
-      const message = `gigDenied: modified with ID: ${results.records}`
-      console.log(message)
-      return(message)
-    } catch (error) {
-      throw error
-    }
+      'UPDATE venue_requests SET approval_status = false WHERE request_id=:request_id ;',
+      {request_id}
+    )
+    const message = `gigDenied: modified with ID: ${results.records}`
+    console.log(message)
+    return(message)
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
 
 
   

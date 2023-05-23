@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import 'source-map-support/register';
-import * as cdk from 'aws-cdk-lib';
-import { CdkStack } from '../lib/cdk-stack';
+import 'source-map-support/register'
+import * as cdk from 'aws-cdk-lib'
+import { CdkStack } from '../lib/cdk-stack'
 
-const app = new cdk.App();
+const app = new cdk.App()
 new CdkStack(app, 'CdkStack', {
   env: { 
     account: process.env.CDK_DEFAULT_ACCOUNT || 'NOT_SET', 
@@ -13,4 +13,4 @@ new CdkStack(app, 'CdkStack', {
   clusterArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
   secretArn: 'arn:aws:secretsmanager:eu-west-2:645438430936:secret:rdsclusterSecret5F22C2CE-p8xEcaDMv252-xYLNp0',
   subDomain: 'actciting'
-});
+})

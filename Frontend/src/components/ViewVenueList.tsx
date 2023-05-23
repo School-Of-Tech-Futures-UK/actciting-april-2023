@@ -19,9 +19,8 @@ export type ViewVenueListProps = {
 }
 
 const ViewVenueList = (props: ViewVenueListProps) => {
-    const { venueArray, venueIdShow } = props;
+    const { venueIdShow } = props;
   
-    const filteredVenueArray = venueArray.filter(venue => venue.venue_id === venueIdShow);
   
     return (
         <>

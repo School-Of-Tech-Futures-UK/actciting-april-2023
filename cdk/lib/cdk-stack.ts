@@ -1,6 +1,6 @@
-import * as cdk from 'aws-cdk-lib';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib'
+import * as s3 from 'aws-cdk-lib/aws-s3'
+import { Construct } from 'constructs'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import * as s3Deployment from 'aws-cdk-lib/aws-s3-deployment'
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront'
@@ -21,50 +21,50 @@ export interface ActcitingSettings extends cdk.StackProps {
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ActcitingSettings) {
-    super(scope, id, props);
+    super(scope, id, props)
 
-  // The code that defines your stack goes here
-  const bucket = new s3.Bucket(this, 'frontend-hosting', {
-    bucketName: 'actciting-frontend',
-    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    encryption: s3.BucketEncryption.S3_MANAGED
-  })
-  bucket.addToResourcePolicy( // security
-    new iam.PolicyStatement({
-      resources: [
-        bucket.arnForObjects('*'),
-        bucket.bucketArn
-      ],
-      actions: [ 's3:*' ],
-      effect: iam.Effect.DENY,
-      conditions: {
-        Bool: { 'aws:SecureTransport': 'false' }
-      },
-      principals: [ new iam.AnyPrincipal() ],
+    // The code that defines your stack goes here
+    const bucket = new s3.Bucket(this, 'frontend-hosting', {
+      bucketName: 'actciting-frontend',
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED
     })
-  )
-
-  // API GW. 
-  // Bootstrap should *not* be available in the API!
-  const api = new apigw.RestApi(this, 'apigw',
-    {
-      description: `actciting-apigw`,
-      restApiName: `actciting-apigw`,
-      deployOptions: {
-        stageName: 'api', // must be same as default route handing in Cloud Front Distribution below 
-      },
-      deploy: true, // always deploy,
-      // set up CORS
-      defaultCorsPreflightOptions: {
-        allowHeaders: [
-          'Content-Type', 'Access-Control-Allow-Origin',
-          'Access-Control-Request-Method', 'Access-Control-Request-Headers'
+    bucket.addToResourcePolicy( // security
+      new iam.PolicyStatement({
+        resources: [
+          bucket.arnForObjects('*'),
+          bucket.bucketArn
         ],
-        allowMethods: [ 'OPTIONS', 'GET', 'POST', 'PUT', 'DELETE' ],
-        allowCredentials: true,
-        allowOrigins: [ '*' ], // Allow all. Could be [ 'http://localhost:3000', 'https://${fullDomain}' ],
-      },
-    })
+        actions: [ 's3:*' ],
+        effect: iam.Effect.DENY,
+        conditions: {
+          Bool: { 'aws:SecureTransport': 'false' }
+        },
+        principals: [ new iam.AnyPrincipal() ],
+      })
+    )
+
+    // API GW. 
+    // Bootstrap should *not* be available in the API!
+    const api = new apigw.RestApi(this, 'apigw',
+      {
+        description: `actciting-apigw`,
+        restApiName: `actciting-apigw`,
+        deployOptions: {
+          stageName: 'api', // must be same as default route handing in Cloud Front Distribution below 
+        },
+        deploy: true, // always deploy,
+        // set up CORS
+        defaultCorsPreflightOptions: {
+          allowHeaders: [
+            'Content-Type', 'Access-Control-Allow-Origin',
+            'Access-Control-Request-Method', 'Access-Control-Request-Headers'
+          ],
+          allowMethods: [ 'OPTIONS', 'GET', 'POST', 'PUT', 'DELETE' ],
+          allowCredentials: true,
+          allowOrigins: [ '*' ], // Allow all. Could be [ 'http://localhost:3000', 'https://${fullDomain}' ],
+        },
+      })
 
     api.addUsagePlan('apigw-rate-limits', {
       name: `actciting-apigw-rate-limits`,
@@ -87,137 +87,138 @@ export class CdkStack extends cdk.Stack {
     
 
 
-const getVenuesLambda = new nodejs.NodejsFunction(this, 'venues-get-lambda',
-{
-  functionName: `${props.subDomain}-venues-get-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'getVenuesHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
-  const secretsManagerPermissions = new iam.PolicyStatement({
-    actions: [
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:GetSecretValue"
-    ],
-    effect: iam.Effect.ALLOW,
-    resources: [
-      '*'
-    ]
-  })
+    const getVenuesLambda = new nodejs.NodejsFunction(this, 'venues-get-lambda',
+      {
+        functionName: `${props.subDomain}-venues-get-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/venues-lambdas.ts',//folder that dan makes
+        handler: 'getVenuesHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
+    const secretsManagerPermissions = new iam.PolicyStatement({
+      actions: [
+        'secretsmanager:DescribeSecret',
+        'secretsmanager:GetSecretValue'
+      ],
+      effect: iam.Effect.ALLOW,
+      resources: [
+        '*'
+      ]
+    })
 
-  getVenuesLambda.addToRolePolicy(secretsManagerPermissions)
+    getVenuesLambda.addToRolePolicy(secretsManagerPermissions)
 
-const getVenueByIdLambda = new nodejs.NodejsFunction(this, 'venues-get-by-Id-lambda',
-{
-  functionName: `${props.subDomain}-venues-get-by-Id-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'getVenueByIdHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
-    
-const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
-{
-  functionName: `${props.subDomain}-create-venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'createVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    const getVenueByIdLambda = new nodejs.NodejsFunction(this, 'venues-get-by-Id-lambda',
+      {
+        functionName: `${props.subDomain}-venues-get-by-Id-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/venues-lambdas.ts',//folder that dan makes
+        handler: 'getVenueByIdHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
+    getVenueByIdLambda.addToRolePolicy(secretsManagerPermissions)
 
-const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
-{
-  functionName: `${props.subDomain}-update-venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'updateVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    const createVenueLambda = new nodejs.NodejsFunction(this, 'create-venue-lambda',
+      {
+        functionName: `${props.subDomain}-create-venue-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/venues-lambdas.ts',//folder that dan makes
+        handler: 'createVenueHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
+    createVenueLambda.addToRolePolicy(secretsManagerPermissions)
+    const UpdateVenueLambda = new nodejs.NodejsFunction(this, 'update-venue-lambda',
+      {
+        functionName: `${props.subDomain}-update-venue-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/venues-lambdas.ts',//folder that dan makes
+        handler: 'updateVenueHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
 
 
-const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
-{
-  functionName: `${props.subDomain}-delete-venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/venues-lambdas.ts',//folder that dan makes
-  handler: 'deleteVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    UpdateVenueLambda.addToRolePolicy(secretsManagerPermissions)
 
-const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
-{
-  functionName: `${props.subDomain}-get-gigs-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'getGigsHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    const deleteVenueLambda = new nodejs.NodejsFunction(this, 'delete-venue-lambda',
+      {
+        functionName: `${props.subDomain}-delete-venue-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/venues-lambdas.ts',//folder that dan makes
+        handler: 'deleteVenueHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
 
-const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
-{
-  functionName: `${props.subDomain}-get-gig-by-Id-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'getGigByIdHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    deleteVenueLambda.addToRolePolicy(secretsManagerPermissions)
+    const getGigsLambda = new nodejs.NodejsFunction(this, 'get-gigs-lambda',
+      {
+        functionName: `${props.subDomain}-get-gigs-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/gig-lambdas.ts',//folder that dan makes
+        handler: 'getGigsHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
 
-const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-lambda',
-{
-  functionName: `${props.subDomain}-get-gig-by-Venue-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'getGigsByVenueHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    getGigsLambda.addToRolePolicy(secretsManagerPermissions)
+    const getGigByIdLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Id-lambda',
+      {
+        functionName: `${props.subDomain}-get-gig-by-Id-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/gig-lambdas.ts',//folder that dan makes
+        handler: 'getGigByIdHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
 
-const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
-{
-  functionName: `${props.subDomain}-gig-approve-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'gigApproveHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    getGigByIdLambda.addToRolePolicy(secretsManagerPermissions)
+    const getGigsByVenueLambda = new nodejs.NodejsFunction(this, 'get-gig-by-Venue-lambda',
+      {
+        functionName: `${props.subDomain}-get-gig-by-Venue-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/gig-lambdas.ts',//folder that dan makes
+        handler: 'getGigsByVenueHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
 
-const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
-{
-  functionName: `${props.subDomain}-gig-deny-lambda`,
-  runtime: lambda.Runtime.NODEJS_18_X,
-  entry: './functions/gig-lambdas.ts',//folder that dan makes
-  handler: 'gigDenyHandler',//name of the handler that dan is making
-  environment: lambdaEnvVars,
-  timeout: cdk.Duration.seconds(30),
-  }
-)
+    getGigsByVenueLambda.addToRolePolicy(secretsManagerPermissions)
+    const gigApproveLambda = new nodejs.NodejsFunction(this, 'gig-approve-lambda',
+      {
+        functionName: `${props.subDomain}-gig-approve-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/gig-lambdas.ts',//folder that dan makes
+        handler: 'gigApproveHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
 
-    const healthcheckLambda = new nodejs.NodejsFunction(this, 'healthcheck-lambda', {
-      functionName: `${props.subDomain}-healthcheck-lambda`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      entry: './functions/venues-lambdas.ts',//folder that dan makes
-      handler: 'healthcheck',//name of the handler that dan is making
-      environment: lambdaEnvVars,
-      timeout: cdk.Duration.seconds(30),
-          })
+    gigApproveLambda.addToRolePolicy(secretsManagerPermissions)
+    const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
+      {
+        functionName: `${props.subDomain}-gig-deny-lambda`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: './functions/gig-lambdas.ts',//folder that dan makes
+        handler: 'gigDenyHandler',//name of the handler that dan is making
+        environment: lambdaEnvVars,
+        timeout: cdk.Duration.seconds(30),
+      }
+    )
+
+    gigDenyLambda.addToRolePolicy(secretsManagerPermissions)
 
     const cluster = rds.ServerlessCluster.fromServerlessClusterAttributes(this, 'database-cluster', {
       clusterIdentifier: 'actsent-stack-rdscluster9d572005-rf41aba7zoc9'
@@ -297,109 +298,110 @@ const gigDenyLambda = new nodejs.NodejsFunction(this, 'gig-deny-lambda',
 
     const approveGigsResource = api.root.addResource('gig-approve')
     const gigToBeApprovedResource = approveGigsResource.addResource('{request_id}')
-      //PUT gig-approve/id:
-      gigToBeApprovedResource.addMethod(
+    //PUT gig-approve/id:
+    gigToBeApprovedResource.addMethod(
       'POST',
       new apigw.LambdaIntegration(gigApproveLambda, { proxy: true }),
     )
 
     const denyGigResource = api.root.addResource('gig-deny')
     const gigToBeDeniedResource = denyGigResource.addResource('{request_id}')
-      //'PUT gig-deny/id:'
-      gigToBeDeniedResource.addMethod(
+    //'PUT gig-deny/id:'
+    gigToBeDeniedResource.addMethod(
       'POST',
       new apigw.LambdaIntegration(gigDenyLambda, { proxy: true }),
     )
 
-  //Deployment 
-  new s3Deployment.BucketDeployment(this, 'frontend-deployment', {
-    destinationBucket: bucket,
-    sources: [ s3Deployment.Source.asset('../Frontend/build') ], 
-    retainOnDelete: false,
-    prune: true,
-    memoryLimit: 256, // in case folder is big
-  })
+    //Deployment 
+    new s3Deployment.BucketDeployment(this, 'frontend-deployment', {
+      destinationBucket: bucket,
+      sources: [ s3Deployment.Source.asset('../Frontend/build') ], 
+      retainOnDelete: false,
+      prune: true,
+      memoryLimit: 256, // in case folder is big
+    })
 
-  const domainName = 'actciting.sot-apr-23.com'
+    const domainName = 'actciting.sot-apr-23.com'
 
-  //console 
-  new cdk.CfnOutput(this, 'FrontendBucketName', {
-    value: bucket.bucketName,
-  })
+    //console 
+    new cdk.CfnOutput(this, 'FrontendBucketName', {
+      value: bucket.bucketName,
+    })
 
-  // Raw api url
-  new cdk.CfnOutput(this, 'RawApiUrl', {
-    value: api.url ?? 'NO_URL',
-  })
+    // Raw api url
+    new cdk.CfnOutput(this, 'RawApiUrl', {
+      value: api.url ?? 'NO_URL',
+    })
 
-  // Pretty api url
-new cdk.CfnOutput(this, 'PrettyApiUrl', {
-  value: `https://${domainName}/api/`,
-  })
+    // Pretty api url
+    new cdk.CfnOutput(this, 'PrettyApiUrl', {
+      value: `https://${domainName}/api/`,
+    })
 
-  //certification 
-  const cert = acm.Certificate.fromCertificateArn(
-    this,
-    'cert',
-    props.certArn
-  )
+    //certification 
+    const cert = acm.Certificate.fromCertificateArn(
+      this,
+      'cert',
+      props.certArn
+    )
 
-  const redirectsFunction = new cloudfront.Function(this,'redirects-function',
-    {
-      code: cloudfront.FunctionCode.fromFile({
-        filePath: 'functions/redirects.js',
-      }),
-    }
-  )
+    const redirectsFunction = new cloudfront.Function(this,'redirects-function',
+      {
+        code: cloudfront.FunctionCode.fromFile({
+          filePath: 'functions/redirects.js',
+        }),
+      }
+    )
 
 
-  //cloudfront distribution 
-  const frontendDistribution = new cloudfront.Distribution(this, 'frontend-distribution',
-  {
-    defaultBehavior: {
-      origin: new origins.S3Origin(bucket),
-      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      functionAssociations: [ // extra bit here
+    //cloudfront distribution 
+    const frontendDistribution = new cloudfront.Distribution(this, 'frontend-distribution',
+      {
+        defaultBehavior: {
+          origin: new origins.S3Origin(bucket),
+          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          functionAssociations: [ // extra bit here
             { // redirects handler
               eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
               function: redirectsFunction,
             },
           ],
-    },
-    additionalBehaviors: {
-      '/api/*': { // must be same as default stage name above in ApiGW
-        origin: new origins.HttpOrigin(
-          `${api.restApiId}.execute-api.${props!.env!.region}.amazonaws.com`,
-          {
-            // should be empty so we don't add extra path info 
-            // else it won't match in the API-GW stage
-            originPath: '/'
-          }
-        ),
-        viewerProtocolPolicy:
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED
+        },
+        additionalBehaviors: {
+          '/api/*': { // must be same as default stage name above in ApiGW
+            origin: new origins.HttpOrigin(
+              `${api.restApiId}.execute-api.${props.env!.region}.amazonaws.com`, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+              {
+                // should be empty so we don't add extra path info 
+                // else it won't match in the API-GW stage
+                originPath: '/'
+              }
+            ),
+            viewerProtocolPolicy:
           cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
-        cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
-      },
-    },
-    priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
-    defaultRootObject: 'index.html',
-    domainNames: [domainName],
-    certificate: cert,
-  }
+            allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
+            cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+          },
+        },
+        priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
+        defaultRootObject: 'index.html',
+        domainNames: [domainName],
+        certificate: cert,
+      }
   
-)
+    )
 
-  //base url 
-  const zone = route53.HostedZone.fromLookup(this, 'zone', {
-    domainName: 'sot-apr-23.com'
-  })
+    //base url 
+    const zone = route53.HostedZone.fromLookup(this, 'zone', {
+      domainName: 'sot-apr-23.com'
+    })
 
-new route53.CnameRecord(this, 'client-record', {
-  zone,
-  domainName: frontendDistribution.domainName,
-  recordName: domainName,
-})
+    new route53.CnameRecord(this, 'client-record', {
+      zone,
+      domainName: frontendDistribution.domainName,
+      recordName: domainName,
+    })
   }
 }
 
