@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import Navbar from "../components/Navbar"
 import ViewVenueList from '../components/ViewVenueList';
 import ViewGigList from '../components/GigRequestLists';
+import Footer from '../components/Footer';
+import DeleteVenue from '../components/DeleteVenue';
 
 
 
@@ -32,7 +34,7 @@ const VenueDetails = () => {
       deleteHandler(id);
     }    
      
-    const fetchVenues = async () => {
+    const fetchVenue = async () => {
         const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues/${id}`)
         const data = await results.json()
         return data
@@ -50,7 +52,7 @@ const VenueDetails = () => {
     }
     
     useEffect(() => {
-      fetchVenues().then(setVenue)
+      fetchVenue().then(setVenue)
       fetchGigs().then(setGigs)
     }, [])
 
@@ -58,17 +60,10 @@ const VenueDetails = () => {
     return(
       <>
         <Navbar/>
-
-        <br></br>
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
-        <a className='btn btn-primary my-2'  onClick={handleDeleteClick} href = "/">Delete </a>
-        <br></br> 
-        
+        <DeleteVenue handleDeleteVenueClick={handleDeleteClick}/>
         <ViewGigList GigArray={currentGigs} GigIdShow={id} />
-        <footer>
-            <a href="/Contact">Contact Us</a>
-        </footer>
-        
+        <Footer/>      
         </>
     );
 };

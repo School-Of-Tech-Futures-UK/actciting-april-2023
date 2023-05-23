@@ -19,26 +19,15 @@ export type ViewVenueListProps = {
 }
 
 const ViewVenueList = (props: ViewVenueListProps) => {
-    const { venueArray, venueIdShow } = props;
-  
-    const filteredVenueArray = venueArray.filter(venue => venue.venue_id === venueIdShow);
-  
     return (
         <>
-        <h2>Venue Details for {venueIdShow} </h2>
-
             {props.venueArray.map((venue, index) => (
-              <ViewVenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
-              address={venue.address} geolocation={venue.geolocation} image={venue.image}
-              email={venue.email} startDate={venue.start_date} endDate={venue.end_date}/>
+                <div>
+                    <ViewVenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
+                    address={venue.address} geolocation={venue.geolocation} image={venue.image}
+                    email={venue.email} startDate={venue.start_date} endDate={venue.end_date}/>
+                </div>
             ))}
-
-            {/* {filteredVenueArray.map((venue, index) => (
-            <ViewVenueItem key={venue.venue_id} venueId={venue.venue_id} name={venue.name} capacity={venue.capacity}
-            address={venue.address} geolocation={venue.geolocation} image={venue.image}
-            email={venue.email} startDate={venue.start_date} endDate={venue.end_date}/>
-            ))} */}
-
         </>
     )
 }

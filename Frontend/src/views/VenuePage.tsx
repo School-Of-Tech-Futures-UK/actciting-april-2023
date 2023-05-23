@@ -21,7 +21,7 @@ const VenuePage = () => {
 
 
     const fetchVenues = async () => {
-        const results = await fetch(`http://localhost:3000/venues`)
+        const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues`)
         const data = await results.json()
         return data
     }
