@@ -45,8 +45,6 @@ const AddVenue = (props: AddVenueProps) => {
           .catch(error => console.log('there was an error:', error))
 
           console.log(Name)
-      
-
     }
 
 
@@ -80,8 +78,7 @@ const AddVenue = (props: AddVenueProps) => {
                 <label htmlFor="venueEndDAte"> Venue End Date</label>
                 <input className="form-control" type="text" id = "venueEndDate"value={EndVal} onInput={(event) => setEnd((event.target as HTMLInputElement).value)}></input>
 
-             
-                <a className='btn btn-primary my-2'  onClick={clickHandler } href = "/">Submit </a>
+                <button className='btn btn-primary my-2' onClick={clickHandler}>Submit</button>
             </div>
         </div>
     )
