@@ -1,4 +1,3 @@
-// import VenueItem from "./VenueItem"
 import ViewVenueItem from "./ViewVenueItem"
 
 export interface ViewVenue {

@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom'
 import Navbar from "../components/Navbar"
 import ViewVenueList from '../components/ViewVenueList';
@@ -34,27 +34,22 @@ const VenueDetails = () => {
       deleteHandler(id);
     }    
      
-    const fetchVenue = async () => {
-        const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues/${id}`)
-        const data = await results.json()
-        return data
-    }
+    const fetchVenues = useCallback(async () => {
+      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues/${id}`)
+      const data = await results.json()
+      return data
+  }, [id]) 
 
-    const fetchGigs = async () => {
+    const fetchGigs = useCallback (async () => {
       const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gigs-by-venue/${id}`)
       const data = await results.json()
       return data
-    }
-  
-    const onSelectVenue = (venue_id: any) => {
-      setVenue(venue_id)
-      console.log(currentVenue)
-    }
+    },[id]) 
     
     useEffect(() => {
-      fetchVenue().then(setVenue)
+      fetchVenues().then(setVenue)
       fetchGigs().then(setGigs)
-    }, [])
+    }, [fetchVenues, fetchGigs])
 
 
     return(

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export interface AddVenueProps {
     handleAddVenueClick?: () => void
@@ -15,7 +16,7 @@ const AddVenue = (props: AddVenueProps) => {
     const [StartVal, setStart] = useState('')
     const [EndVal, setEnd] = useState('')
 
-
+    const navigator = useNavigate()
 
     const clickHandler = () => {
         fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/venues`, {
@@ -34,25 +35,19 @@ const AddVenue = (props: AddVenueProps) => {
             end_date: EndVal,
           })
         })
-          .then(response => {
-            if (response.status >= 400) {
-              throw new Error(`error status: ${response.status}`)
-            }else{
-                console.log("success")
-            }
-            return response.text()
-          })
-          .catch(error => console.log('there was an error:', error))
+        .then(response => {
+          if (response.status >= 400) {
+            throw new Error(`error status: ${response.status}`)
+          }else{
+              console.log("success")
+              navigator("/")
+          }
+          return response.text()
+        })
+        .catch(error => console.log('there was an error:', error))
 
-          console.log(Name)
-      
-
+        console.log(Name)
     }
-
-
-
-
-
 
     return (
       <div className="p-5 bg-light rounded-3">
@@ -83,8 +78,7 @@ const AddVenue = (props: AddVenueProps) => {
                 <label className="fs-5" htmlFor="venueEndDAte"> Venue End Date:</label>
                 <input className="form-control" type="text" id = "venueEndDate"value={EndVal} onInput={(event) => setEnd((event.target as HTMLInputElement).value)} placeholder="DDMMYYYY"></input>
 
-             
-                <a className='btn btn-dark mt-3 btn-lg'  onClick={clickHandler } href = "/">Submit </a>
+                <button className='btn btn-primary my-2' onClick={clickHandler}>Submit</button>
             </div>
         </div>
       </div>

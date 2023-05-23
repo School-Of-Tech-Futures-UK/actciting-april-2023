@@ -23,30 +23,30 @@ app.get('/', (request, response) => {
 
 // API urls code here
 app.get('/venues', async (request: Request, response: Response) => {
-  console.log('GET getVenues/');
+  console.log('GET getVenues/')
 
   try{
-    const venues = await dbHelper.getVenues();
+    const venues = await dbHelper.getVenues()
     response.status(200).json(venues)
   } catch (err){
     console.log('Error thrown in getVenues: ', (err as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
-});
+})
 
 
 app.get('/venue/:id', async (request: Request, response: Response) => {
-  console.log('GET getVenuesById/');
+  console.log('GET getVenuesById/')
   const venue_id = parseInt(request.params.id)
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
-    const venueById = await dbHelper.getVenueById(venue_id);
+    const venueById = await dbHelper.getVenueById(venue_id)
     response.status(200).json(venueById)
   } catch (err){
     console.log('Error thrown in getVenues: ', (err as Error).message)
     response.status(500).json({ message: 'There was an error' })
   }
-});
+})
 
 
 //app.get('/venue/:id', dbHelper.getVenueById)
@@ -54,7 +54,7 @@ app.post('/venues', async (request: Request, response: Response) => {
   const { name, capacity, address, geolocation, image, email, start_date, end_date } = request.body
   console.log(`createVenue: name=${name}, capacity=${capacity}, address=${address}, geolocation=${geolocation}, image=${image}, email=${email}, start_date=${start_date}, end_date=${end_date}`)
   try{
-    const result = await dbHelper.createVenue(name, capacity, address, geolocation, image, email, start_date, end_date);
+    const result = await dbHelper.createVenue(name, capacity, address, geolocation, image, email, start_date, end_date)
     response.status(200).json(result)
   }
   catch(error){
@@ -62,7 +62,7 @@ app.post('/venues', async (request: Request, response: Response) => {
     response.status(500).json({ message: 'There was an error' })
   }
 
-});
+})
 
 
 
@@ -82,7 +82,7 @@ app.put('/venue/:id', async (request: Request, response: Response) => {
   }
 
 
-});
+})
 
 app.delete('/venue/:id', async (request: Request, response: Response) => {
   const venue_id = parseInt(request.params.id)
@@ -97,7 +97,7 @@ app.delete('/venue/:id', async (request: Request, response: Response) => {
     response.status(500).json({ message: 'There was an error' })
   }
 
-});
+})
 
 
 
