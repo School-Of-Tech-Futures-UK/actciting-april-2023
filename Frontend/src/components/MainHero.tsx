@@ -10,7 +10,7 @@ const MainHero = () => {
         <img src="https://media.timeout.com/images/105948176/750/562/image.jpg" className="d-block mx-lg-auto img-fluid rounded-4 shadow-lg" alt="Bootstrap Themes" width="700" height="500" loading="lazy"></img>
       </div>
       <div className="col-lg-6">
-        <h1 className="display-5 fw-bold lh-1 mb-3">Welcome to <h1 className="display-5 fw-bold lh-1 mb-3 actcitingOrange">ActCiting.</h1></h1>
+        <h1 className="display-5 fw-bold lh-1 mb-3">Welcome to <span className="display-5 fw-bold lh-1 mb-3 actcitingOrange">ActCiting.</span></h1>
         <p className="lead">The best place for finding the best gigs all around the country for your venue. Discover your talent now.</p>
       </div>
     </div>

@@ -19,7 +19,7 @@ const Navbar = () => {
                     c17.921-11.598,24.249-21.607,24.77-33.218c0,0-21.352,15.028-40.855-4.476c-15.677-15.678-8.708-42.391-1.947-56.529
                     L377.6,125.398z"/></g></g>
                 </svg>
-                <span className="fs-4 fw-bold text-light actcitingOrange">ActCiting</span>
+                <span className="fs-4 fw-bold text-light actcitingOrange">ActCiting |</span><span className="fs-4 fw-bold text-light">&nbsp;Part of GigStr</span>
             </a>
             <ul className="nav nav-pills">
                 <li className="nav-item"><a href="/" className="nav-link fw-bold text-light">Home</a></li>

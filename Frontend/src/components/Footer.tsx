@@ -24,7 +24,7 @@ const Footer = () => {
         </a>
 
         <ul className="nav col-md-4 justify-content-end">
-          <li className="nav-item"><a href="Contact" className="nav-link px-5 text-light">Contact Us</a></li>
+          <li className="nav-item"><a href="Contact" className="nav-link px-5 text-light fw-bold">Contact Us</a></li>
         </ul>
       </footer>
     )
