@@ -6,15 +6,14 @@ import client = require('data-api-client')
 //   database: 'dev'
 // })
 type VenueData = {
-  venueId: number,
   name: string,
   capacity: number,
   address: string,
   geolocation: string,
   image: string,
   email: string,
-  startDate: number,
-  endDate: number
+  start_date: number,
+  end_date: number
 }
 
 const connection = client({

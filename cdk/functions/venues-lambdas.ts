@@ -72,6 +72,7 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
     if ( postDataJson.start_date===undefined|| Number.isNaN(parseInt(postDataJson.start_date))){isValid=false;test+='Startdate'}
     if ( postDataJson.end_date ===undefined|| Number.isNaN(parseInt(postDataJson.end_date))){isValid=false;test+='enddATE'}
     console.log(test,isValid)
+
     const parsedData = {
       name: postDataJson.name,
       capacity: Number(postDataJson.capacity),
@@ -80,7 +81,9 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
       image : postDataJson.image,
       email: postDataJson.email,
       start_date: Number(postDataJson.start_date),
-      end_date: Number(postDataJson.end_date)}
+      end_date: Number(postDataJson.end_date)
+    }
+
     if (isValid){
       const postResponse = await createVenue(parsedData)
       const result = responseToApiGw(200, postResponse)
