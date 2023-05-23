@@ -5,7 +5,7 @@ import client = require('data-api-client')
 //   resourceArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
 //   database: 'dev'
 // })
-type VenueData = {
+export type VenueData = {
   venueId: number,
   name: string,
   capacity: number,
@@ -13,8 +13,8 @@ type VenueData = {
   geolocation: string,
   image: string,
   email: string,
-  startDate: number,
-  endDate: number
+  start_date: number,
+  end_date: number
 }
 
 const connection = client({

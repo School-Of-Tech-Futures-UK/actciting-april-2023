@@ -2,6 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import VenuePage from './VenuePage'
 import '@testing-library/jest-dom/extend-expect'
+import { BrowserRouter } from 'react-router-dom'
 
 
 
@@ -10,7 +11,11 @@ describe('Button functionality', () => {
     //create test form hidden when page rendered 
     it('Log on page and form is hidden', () => {
         //Arrange
-        render(<VenuePage/>)
+        render(
+            <BrowserRouter>
+                <VenuePage/>
+            </BrowserRouter>
+        )
 
         const venueForm = screen.getByTestId('venueForm' )
 
@@ -21,7 +26,11 @@ describe('Button functionality', () => {
     //2nd test
     it('Clicking button should list all inputs', () =>{
         //Arrange 
-        render(<VenuePage/>)
+        render(
+            <BrowserRouter>
+                <VenuePage/>
+            </BrowserRouter>
+        )
         //Act
         const button= screen.getByText('Add Venue')
         fireEvent.click(button);
@@ -34,7 +43,11 @@ describe('Button functionality', () => {
     //3rd test
     it('Clicking button again should hide all inputs', () => {
         //Arrange
-        render(<VenuePage/>)
+        render(
+            <BrowserRouter>
+                <VenuePage/>
+            </BrowserRouter>
+        )
         //Act
         const button= screen.getByText('Add Venue')
         fireEvent.click(button);
