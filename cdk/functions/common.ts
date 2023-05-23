@@ -2,7 +2,7 @@ import * as lambda from 'aws-lambda'
 
 export type LambdaResult = Promise<lambda.APIGatewayProxyResultV2>
 export type LambdaEvent = lambda.APIGatewayProxyEventV2
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const responseToApiGw = (status: number, bodyObject: any): lambda.APIGatewayProxyStructuredResultV2 => {
   // API GW expects a specific structure of response from a Lambda integration
   return responseToApiGwWithText(status, JSON.stringify(bodyObject))
@@ -53,9 +53,9 @@ export const timestampTextRaw = (aDate: Date) => {
 // We want all specified keys on the object to be a string or a number
 export const checkKeys = (keyList: Array<string>, checkObject: {[key: string] : string | number}) => {
   return keyList.every(key =>
-    (
-      (checkObject[key] && typeof checkObject[key] === 'string'))
+  {return (
+    (checkObject[key] && typeof checkObject[key] === 'string'))
     || (!isNaN(Number.parseInt(`${  checkObject[key]}`))
-    )
+    )}
   )
 }

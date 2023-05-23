@@ -13,78 +13,83 @@ const connection = client({
 })
 
 export const getVenues = async () => {
-    console.log('getVenues() called');
-    try {
-      const results = await connection.query(
-        'SELECT * FROM venues ORDER BY venue_id ASC;'
-      )
-      return results.records;
-    } catch (err) {
-      throw err;
-    }
+  console.log('getVenues() called')
+  try {
+    const results = await connection.query(
+      'SELECT * FROM venues ORDER BY venue_id ASC;'
+    )
+    return results.records
+  } catch (err) {
+    console.log('error', err)
+    throw err
   }
+}
 
-  export const getVenueById = async (venue_id:any) => {
+export const getVenueById = async (venue_id:number) => {
 
-    try {
-      const results = await connection.query(
-        'SELECT * FROM venues WHERE venue_id = venue_id;',
-        {venue_id}
-      )
+  try {
+    const results = await connection.query(
+      'SELECT * FROM venues WHERE venue_id = venue_id;',
+      {venue_id}
+    )
   
-      return results.records;
+    return results.records
   
-    } catch (error) {
-      throw error
-    }
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
 
-  export const createVenue = async (venueData:any) => {
+export const createVenue = async (venueData:any) => {
 
  
-    try {
-      const results = await connection.query(
+  try {
+    const results = await connection.query(
 
-        'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
-        {...venueData}
-      )
-      const message = `createVenue: venue added with ID: ${results.records[0].venue_id}`
-      console.log(message)
-      return(message)
-    } catch (error) {
-      throw error
-    }
+      'INSERT INTO venues (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
+      {...venueData}
+    )
+    const message = `createVenue: venue added with ID: ${results.records[0].venue_id}`
+    console.log(message)
+    return(message)
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
 
-  export const updateVenue = async (venueData:any) => {
+export const updateVenue = async (venueData:any) => {
 
-    try {
-      const results = await connection.query(
+  try {
+    const results = await connection.query(
         
-        'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
-        {...venueData}
-      )
-      const message = `updateVenue: modified with ID: ${results.records[0].venue_id}`
-      console.log(message)
-      return(message)
-    } catch (error) {
-      throw error
-    }
+      'UPDATE venues SET (name, capacity, address, geolocation, image, email, start_date, end_date )) '+ ' VALUES (name:, capacity:, address:, geolocation:, image:, email:, start_date:, end_date:) RETURNING *;',
+      {...venueData}
+    )
+    const message = `updateVenue: modified with ID: ${results.records[0].venue_id}`
+    console.log(message)
+    return(message)
+  } catch (error) {
+    console.log('error',error)
+    throw error
   }
+}
 
-  export const deleteVenue = async (venue_id: any) => {
+export const deleteVenue = async (venue_id: number) => {
 
-    try {
-      const results = await connection.query(
-        'DELETE FROM venues WHERE venue_id = :venue_id:;',
-        {venue_id}
-      )
-      const message = `deleteVenue: venue deleted with ID: ${results.records[0].venue_id}`
-      console.log(message)
-      return(message)
+  try {
+    const results = await connection.query(
+      'DELETE FROM venues WHERE venue_id = :venue_id:;',
+      {venue_id}
+    )
+    const message = `deleteVenue: venue deleted with ID: ${results.records[0].venue_id}`
+    console.log(message)
+    return(message)
   
-    } catch (error) {
-      throw error
-    }
+  } catch (error) {
+    console.log('error', error)
+    throw error
   }
+}
   
