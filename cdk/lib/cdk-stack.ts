@@ -257,12 +257,12 @@ export class CdkStack extends cdk.Stack {
       new apigw.LambdaIntegration(createVenueLambda, { proxy: true }),
     )
 
-    venuesResource.addMethod(
+    venuesIdResource.addMethod(
       'PUT',
       new apigw.LambdaIntegration(UpdateVenueLambda, { proxy: true }),
     )
 
-    venuesResource.addMethod(
+    venuesIdResource.addMethod(
       'DELETE',
       new apigw.LambdaIntegration(deleteVenueLambda, { proxy: true }),
     )

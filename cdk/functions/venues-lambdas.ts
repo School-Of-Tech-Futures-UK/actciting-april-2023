@@ -43,7 +43,7 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
   console.log('GET venue/id:')
 
   const urlParams = event.pathParameters || {}
-  const venue_id = Number(urlParams.venue_id)|| '-1'
+  const venue_id = Number(urlParams.venue_id)|| -1
 
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
@@ -98,7 +98,7 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
 }
 
 export const updateVenueHandler = async (event: LambdaEvent): LambdaResult => {
-  console.log('PUT venue/id:')
+  console.log('PUT venues/id:')
   try{
     const postDataText = event.body || '{}'
     const postDataJson = JSON.parse(postDataText)
@@ -114,10 +114,10 @@ export const updateVenueHandler = async (event: LambdaEvent): LambdaResult => {
 }
 
 export const deleteVenueHandler = async (event: LambdaEvent): LambdaResult => {
-  console.log('DELETE venue/id:')
+  console.log('DELETE venues/id:')
 
   const urlParams = event.pathParameters || {}
-  const venue_id = Number(urlParams.venue_id)|| '-1'
+  const venue_id = Number(urlParams.venue_id)|| -1
     
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
