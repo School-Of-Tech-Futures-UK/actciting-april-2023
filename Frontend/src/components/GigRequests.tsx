@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 export interface ViewGig {
-  gig_id: number,
+  request_id: number,
   artist: string,
   venue_id: number,
   artist_genre: string,
@@ -21,7 +21,7 @@ export const GigRequests = (props: ViewGig) => {
     };
   
     const ApproveGig = async () => {
-      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gig-approve/${props.gig_id}` , {method: 'PUT'})
+      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gig-approve/${props.request_id}` , {method: 'POST'})
       const data = await results.json()
       return data
     }
@@ -31,7 +31,7 @@ export const GigRequests = (props: ViewGig) => {
     };
     
     const DenyGig = async () => {
-      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gig-deny/${props.gig_id}`, {method: 'PUT'})
+      const results = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/gig-deny/${props.request_id}`, {method: 'POST'})
       const data = await results.json()
       return data
     }
@@ -50,28 +50,6 @@ export const GigRequests = (props: ViewGig) => {
           </div>
         </div>
       </div>
-      // <div className="col d-flex justify-content-center mb-3">
-      //       <div className="venueItem card text-center bg-light h-100">
-      //           <div className="card-body">
-      //               <h4 className="card-title">{props.artist}</h4>
-      //               <p className="card-text"> Date: {props.date} </p>
-      //                   <p className="card-text">Genre: {props.artist_genre}</p>
-      //                   {approvalStatus === null && <p className="card-text">Approval Status: Pending </p> }
-      //                   {approvalStatus === true && <p className="card-text">Approval Status: Approved </p> }
-      //                   {approvalStatus === false && <p className="card-text">Approval Status: Denied </p> }
-      //                   {approvalStatus === null && (
-      //                 <>
-      //                   <button className="approval-status-button" onClick={approveEvent}>Approve</button>
-      //                   <button className="approval-status-button" onClick={denyEvent}>Deny</button>
-      //                 </>
-      //               )}
-      //           </div>
- 
-      //       </div>
-      
-
-      // </div>
-
     );
   };
   export default  GigRequests;

@@ -40,8 +40,8 @@ const AddVenue = (props: AddVenueProps) => {
             geolocation: GeolocationVal,
             image: "https://lh5.googleusercontent.com/p/AF1QipP2sN2qKTb-4beqF1zFeMWGCP3vW-Ih1X2o4QfE=w426-h240-k-no", // placeholder image
             email: EmailVal,
-            start_date: startDateValue,
-            end_date: endDateValue,
+            start_date: formattedStartDateValue,
+            end_date: formattedEndDateValue,
           })
         })
         .then(response => {
@@ -49,7 +49,11 @@ const AddVenue = (props: AddVenueProps) => {
             throw new Error(`error status: ${response.status}`)
           }else{
               console.log("success")
-              navigator("/")
+              setTimeout(() => {
+                navigator("/")
+                window.location.reload();
+              },
+              1000);
           }
           return response.text()
         })

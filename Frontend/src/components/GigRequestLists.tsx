@@ -26,7 +26,7 @@ const ViewGigList = (props: ViewGigListProps) => {
                 <h1 className="fw-bold pb-2">Gigs for {Venue.name}</h1>
                 <div className="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
                     {props.GigArray.map((Gig, index) => (
-                        <GigRequests key={Gig.gig_id} gig_id={Gig.gig_id} venue_id={Gig.venue_id} artist={Gig.artist}
+                        <GigRequests key={Gig.request_id} request_id={Gig.request_id} venue_id={Gig.venue_id} artist={Gig.artist}
                         artist_genre={Gig.artist_genre} date={Gig.date} approval_status={Gig.approval_status}/>
                     ))}
                 </div>
