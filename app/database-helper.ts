@@ -2,19 +2,19 @@ import { createPool } from './connection'
 import { Request, Response } from 'express'
 
 const dbServer = process.env.POSTGRES_DB
-const dbPassword = process.env.POSTGRES_PASSWORD
 
 console.log(`Create pool with defaults: server='${dbServer}'`)
 
 export const getVenues = async () => {
-  console.log('getVenues() called');
+  console.log('getVenues() called')
   try {
     const results = await createPool().query(
       'SELECT * FROM venues ORDER BY venue_id ASC;'
     )
-    return results.rows;
+    return results.rows
   } catch (err) {
-    throw err;
+    console.log('error was caught', err)
+    throw err
   }
 }
 
@@ -33,7 +33,7 @@ export const getVenues = async () => {
 // }
 
 
-export const getVenueById = async (venue_id:any) => {
+export const getVenueById = async (venue_id:number) => {
 
   try {
     const results = await createPool().query(
@@ -41,14 +41,15 @@ export const getVenueById = async (venue_id:any) => {
       [venue_id]
     )
 
-    return results.rows;
+    return results.rows
 
   } catch (error) {
+    console.log('error', error)
     throw error
   }
 }
 
-export const createVenue = async (name:any, capacity:any, address:any, geolocation:any, image:any, email:any, start_date:any, end_date:any) => {
+export const createVenue = async (name:string, capacity:number, address:string, geolocation:string, image:string, email:string, start_date:number, end_date:number) => {
  
  
   try {
@@ -63,14 +64,15 @@ export const createVenue = async (name:any, capacity:any, address:any, geolocati
     return(message)
 
   } catch (error) {
+    console.log('error', error)
     throw error
   }
 }
 
-export const updateVenue = async (name:any, capacity:any, address:any, geolocation:any, image:any, email:any, start_date:any, end_date:any, venue_id:any) => {
+export const updateVenue = async (name:string, capacity:number, address:string, geolocation:string, image:string, email:string, start_date:number, end_date:number, venue_id:number) => {
 
   try {
-    const results = await createPool().query(
+    await createPool().query(
       
       'UPDATE venues SET name = $1, capacity = $2, address=$3, geolocation=$4, image=$5, email=$6, start_date=$7, end_date=$8 WHERE venue_id = $9;',
       [name, capacity, address, geolocation, image, email, start_date, end_date, venue_id ]
@@ -79,14 +81,15 @@ export const updateVenue = async (name:any, capacity:any, address:any, geolocati
     console.log(message)
     return(message)
   } catch (error) {
+    console.log('error', error)
     throw error
   }
 }
 
-export const deleteVenue = async (venue_id: any) => {
+export const deleteVenue = async (venue_id: number) => {
 
   try {
-    const results = await createPool().query(
+    await createPool().query(
       'DELETE FROM venues WHERE venue_id = $1;',
       [venue_id]
     )
@@ -95,7 +98,7 @@ export const deleteVenue = async (venue_id: any) => {
     return(message)
 
   } catch (error) {
-    throw "error here"
+    throw 'error here'
   }
 }
 
@@ -148,11 +151,10 @@ export const getGigsByVenue = async (request: Request, response: Response) => {
 
 export const gigApprove = async (request: Request, response: Response) => {
   const gig_id = parseInt(request.params.id)
-  const { approval_status } = request.body
   console.log(`gigApprove: gig_id=${gig_id}`)
 
   try {
-    const results = await createPool().query(
+    await createPool().query(
 
       'UPDATE gig_requests SET approval_status = true WHERE gig_id = $1;',
       [gig_id]
@@ -171,7 +173,7 @@ export const gigDeny = async (request: Request, response: Response) => {
   console.log(`GigDeny: gig_id=${gig_id}`)
 
   try {
-    const results = await createPool().query(
+    await createPool().query(
 
       'UPDATE gig_requests SET  approval_status = false WHERE gig_id = $1;',
       [gig_id]

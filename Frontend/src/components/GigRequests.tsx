@@ -1,6 +1,5 @@
 
-import { useState,useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import { useState } from 'react';
 
 export interface ViewGig {
   gig_id: number,

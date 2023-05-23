@@ -7,7 +7,8 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended"
-    ],
+    ], 
+    "ignorePatterns": ["cdk/functions/redirects.js", "cdk/jest.config.js"],
     "overrides": [
     ],
     "parser": "@typescript-eslint/parser",
