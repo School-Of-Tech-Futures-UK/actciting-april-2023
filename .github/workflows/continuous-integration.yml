@@ -41,7 +41,11 @@ jobs:
 
     - name: npm test
       working-directory: ./Frontend
-      run: npm test
+      run: npm test,
+    
+    - name: npm lint
+      working-directory: ./Frontend
+      run: npm lint
   
   backend:
     runs-on: ubuntu-latest
@@ -80,3 +84,7 @@ jobs:
     - name: npm make package-lock if missing
       working-directory: ./app
       run: npm i --package-lock-only
+
+    - name: npm lint
+      working-directory: ./app
+      run: npm lint

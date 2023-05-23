@@ -7,7 +7,8 @@
         "test": "jest",
         "start": "npx ts-node server.ts",
         "stop": "kill MyExpressApp",
-        "dev": "nodemon server.ts &"
+        "dev": "nodemon server.ts &",
+        "lint": "npx eslint . --fix"
     },
     "author": "",
     "license": "ISC",
