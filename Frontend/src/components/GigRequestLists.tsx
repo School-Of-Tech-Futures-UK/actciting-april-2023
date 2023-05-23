@@ -6,9 +6,8 @@ export type ViewGigListProps = {
 }
 
 const ViewGigList = (props: ViewGigListProps) => {
-    const { GigArray, GigIdShow } = props;
+    const { GigIdShow } = props;
   
-    const filteredGigArray = GigArray.filter(Gig => Gig.venue_id === GigIdShow);
   
     return (
         <>
