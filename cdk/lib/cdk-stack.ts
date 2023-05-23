@@ -375,6 +375,7 @@ new cdk.CfnOutput(this, 'PrettyApiUrl', {
               function: redirectsFunction,
             },
           ],
+      cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED
     },
     additionalBehaviors: {
       '/api/*': { // must be same as default stage name above in ApiGW
