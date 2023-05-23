@@ -91,7 +91,7 @@ export const deleteVenue = async (venue_id: number) => {
 
   try {
     const results = await connection.query(
-      'DELETE FROM venues WHERE venue_id = :venue_id:;',
+      'DELETE FROM venues WHERE venue_id = :venue_id;',
       {venue_id}
     )
     const message = `deleteVenue: venue deleted with ID: ${results.records[0].venue_id}`

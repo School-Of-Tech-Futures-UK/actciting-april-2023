@@ -33,7 +33,7 @@ export const getGigByIdHandler = async (event: LambdaEvent): LambdaResult => {
   console.log('GET gigs/id:')
   
   const urlParams = event.pathParameters || {}
-  const request_id = Number(urlParams.request_id)|| '-1'
+  const request_id = Number(urlParams.request_id)|| -1
   
   console.log(`getGigById: request_id=${request_id}`)
   try{
@@ -50,7 +50,7 @@ export const getGigsByVenueHandler = async (event: LambdaEvent): LambdaResult =>
   console.log('GET gigs-by-venue/id:')
 
   const urlParams = event.pathParameters || {}
-  const request_id = Number(urlParams.request_id)|| '-1'
+  const request_id = Number(urlParams.request_id)|| -1
 
   console.log(`getGigById: request_id=${request_id}`)
   try{
@@ -66,7 +66,7 @@ export const getGigsByVenueHandler = async (event: LambdaEvent): LambdaResult =>
 export const gigApproveHandler = async (event: LambdaEvent): LambdaResult => {
   console.log('PUT gig-approve/id:')
   const urlParams = event.pathParameters || {}
-  const request_id = Number(urlParams.request_id)|| '-1'
+  const request_id = Number(urlParams.request_id)|| -1
   try{
     const gigApproval = await gigApprove(request_id)
     return responseToApiGw(200, gigApproval)
@@ -78,10 +78,10 @@ export const gigApproveHandler = async (event: LambdaEvent): LambdaResult => {
   }
 }
   
-export const gigDenyeHandler = async (event: LambdaEvent): LambdaResult => {
+export const gigDenyHandler = async (event: LambdaEvent): LambdaResult => {
   console.log('PUT gig-deny/id:')
   const urlParams = event.pathParameters || {}
-  const request_id = Number(urlParams.request_id)|| '-1'
+  const request_id = Number(urlParams.request_id)|| -1
   try{
     const gigDenial = await gigDeny(request_id)
     return responseToApiGw(200, gigDenial)
