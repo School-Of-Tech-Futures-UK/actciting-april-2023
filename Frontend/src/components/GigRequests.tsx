@@ -38,15 +38,15 @@ export const GigRequests = (props: ViewGig) => {
     return(
       <div className='col'>
         <div className="card text-center">
-          <h3 className="card-header">{props.artist}</h3>
+          <h3 className="card-header actcitingOrange bg-dark">{props.artist}</h3>
           <div className="card-body">
-            <p className="card-text"> Date: {props.date} </p>
-            <p className="card-text">Genre: {props.artist_genre}</p>
-            {approvalStatus === null && <p className="card-text">Approval Status: Pending </p> }
-            {approvalStatus === true && <p className="card-text">Approval Status: Approved </p> }
-            {approvalStatus === false && <p className="card-text">Approval Status: Denied </p> }
-            <button className="approval-status-button btn btn-dark mx-1" onClick={approveEvent}>Approve</button>
-            <button className="approval-status-button btn btn-dark mx-1" onClick={denyEvent}>Deny</button>
+            <p className="card-text fs-6 fw-bold"> Date: {props.date} </p>
+            <p className="card-text fs-6 fw-bold">Genre: {props.artist_genre}</p>
+            {approvalStatus === null && <p className="card-text fs-6 fw-bold">Approval Status: <span className="badge rounded-pill text-bg-warning">Pending</span> </p> }
+            {approvalStatus === true && <p className="card-text fs-6 fw-bold">Approval Status: <span className="badge rounded-pill bg-success">Approved</span> </p> }
+            {approvalStatus === false && <p className="card-text fs-6 fw-bold">Approval Status: <span className="badge rounded-pill bg-danger">Denied</span> </p> }
+            <button className="approval-status-button btn btn-success mx-1" onClick={approveEvent}>Approve</button>
+            <button className="approval-status-button btn btn-danger mx-1" onClick={denyEvent}>Deny</button>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import ViewVenueList from '../components/ViewVenueList';
 import ViewGigList from '../components/GigRequestLists';
 import Footer from '../components/Footer';
 import DeleteVenue from '../components/DeleteVenue';
+import Venue404 from '../components/Venue404';
 
 const VenueDetails = () => {
     const {id} = useParams()
@@ -70,11 +71,16 @@ const VenueDetails = () => {
 
     return(
       <>
+        {currentVenue.length ? 
+        <>
         <Navbar/>
         <ViewVenueList venueArray={currentVenue} venueIdShow={id}/>
         <DeleteVenue handleDeleteVenueClick={handleDeleteClick}/>
         <ViewGigList GigArray={currentGigs} GigIdShow={id} VenueDetails={currentVenue}/>
-        <Footer/>      
+        <Footer/>   
+        </> :
+        <Venue404/>
+        }   
         </>
     );
 };
