@@ -1,0 +1,90 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      # - '*'
+      - '!main'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: npm make package-lock if missing
+      working-directory: ./Frontend
+      run: npm i --package-lock-only
+
+    - name: npm ci
+      working-directory: ./Frontend
+      run: npm ci
+
+    - name: npm build
+      working-directory: ./Frontend
+      run: npm run build --if-present
+
+    - name: npm test
+      working-directory: ./Frontend
+      run: npm test
+    
+    - name: npm lint
+      working-directory: ./Frontend
+      run: npm lint
+  
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: npm make package-lock if missing
+      working-directory: ./cdk/functions
+      run: npm i --package-lock-only
+
+    - name: npm ci
+      working-directory: ./cdk/functions
+      run: npm ci
+
+    - name: npm build
+      working-directory: ./cdk/functions
+      run: npm run build --if-present
+
+    - name: npm test
+      working-directory: ./cdk/functions
+      run: npm test
+
+    - name: npm make package-lock if missing
+      working-directory: ./cdk/functions
+      run: npm i --package-lock-only
+
+    - name: npm lint
+      working-directory: ./cdk/functions
+      run: npm lint
