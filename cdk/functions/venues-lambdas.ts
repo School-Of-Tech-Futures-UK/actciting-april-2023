@@ -9,7 +9,8 @@ import {
   getVenueById,
   createVenue,
   updateVenue,
-  deleteVenue
+  deleteVenue,
+  VenueData
 } from './venues'
 
 export type VenueItemProps = {
@@ -19,8 +20,8 @@ export type VenueItemProps = {
   geolocation: string,
   image: string,
   email: string,
-  startDate: number,
-  endDate: number
+  start_date: number,
+  end_date: number
 }
 
 
@@ -47,7 +48,7 @@ export const getVenueByIdHandler = async (event: LambdaEvent): LambdaResult => {
 
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
-    const venueById = await getVenueById(venue_id)
+    const venueById = await getVenueById(Number(venue_id))
     return responseToApiGw(200, venueById)
 
   } catch (error){
@@ -80,7 +81,8 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
       image : postDataJson.image,
       email: postDataJson.email,
       start_date: Number(postDataJson.start_date),
-      end_date: Number(postDataJson.end_date)}
+      end_date: Number(postDataJson.end_date)
+    } as VenueData
     if (isValid){
       const postResponse = await createVenue(parsedData)
       const result = responseToApiGw(200, postResponse)
@@ -121,7 +123,7 @@ export const deleteVenueHandler = async (event: LambdaEvent): LambdaResult => {
     
   console.log(`getVenueById: venue_id=${venue_id}`)
   try{
-    const venueById = await deleteVenue(venue_id)
+    const venueById = await deleteVenue(Number(venue_id))
     return responseToApiGw(200, venueById)
     
   } catch (error){
