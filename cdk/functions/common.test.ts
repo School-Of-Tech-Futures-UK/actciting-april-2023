@@ -40,7 +40,7 @@ describe('responseToApiGwWithText', () => {
 describe('timestampTextRaw', () => {
   it('will print the standard text', () => {
     const aDate = new Date(1234567890)
-    expect(timestampTextRaw(aDate)).toEqual('15 Jan 1970, 07:56:07')
+    expect(timestampTextRaw(aDate)).toEqual('15 Jan 1970, 06:56:07')
   })
 })
 

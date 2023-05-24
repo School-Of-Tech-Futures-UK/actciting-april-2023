@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import AddVenue from "../components/AddVenue"
 import VenueList from "../components/VenueList"
 import Navbar from "../components/Navbar"
+import Footer from "../components/Footer";
+import MainHero from "../components/MainHero";
 
 
 
@@ -31,13 +33,11 @@ const VenuePage = () => {
 
   return (
     <>
-    <Navbar/>
-      <h1>ActCiting</h1>
+      <Navbar/>
+      <MainHero/>
       <AddVenue handleAddVenueClick={addVenueClickHandler} newVenueDivState={newVenueDivDisplay} />
       <VenueList venueArray={currentVenues} />
-      <footer>
-        <a href="/">Contact Us</a>
-      </footer>
+      <Footer/>
     </>
   );
 };

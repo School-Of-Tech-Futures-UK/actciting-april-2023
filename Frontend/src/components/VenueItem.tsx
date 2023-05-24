@@ -15,22 +15,21 @@ const VenueItem = (props: VenueItemProps) => {
     const fullUrl = baseUrl + '/' + props.venueId
 
     return (
-        <div className="col d-flex justify-content-center mb-3">
-            <div className="venueItem card text-center bg-light h-100">
-                <img className="card-img-top" src={props.image} alt={props.name}></img>
-                <div className="card-body">
-                    <h4 className="card-title">{props.name}</h4>
-                    <p className="card-text">
-                        Capacity: {props.capacity}
-                        <br></br>
-                        {props.address}
-                        <br></br>
-                        {props.email}
-                        <br></br>
-                        Available: {props.startDate} - {props.endDate}
-                    </p>
-                   <a href ={fullUrl} className='btn btn-primary'>View Venue</a>
-                </div>
+        <div className="col">
+            <div className="card card-cover h-100 overflow-hidden text-bg-light rounded-4 shadow-lg" 
+            style={{
+                backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.8)), url(${props.image})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover"
+            }}>
+            <div className="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                <h3 className="my-5 display-6 lh-1 fw-bold rounded-4">{props.name}</h3>
+                <ul className="d-flex list-unstyled mt-auto">
+                <li className="d-flex align-items-center me-3">
+                    <a href ={fullUrl} className='btn btn-light btn-sm fw-bold shadow-lg'>View Venue</a>
+                </li>
+                </ul>
+            </div>
             </div>
         </div>
     )

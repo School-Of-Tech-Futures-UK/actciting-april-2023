@@ -73,6 +73,7 @@ export const createVenueHandler = async (event: LambdaEvent): LambdaResult => {
     if ( postDataJson.start_date===undefined|| Number.isNaN(parseInt(postDataJson.start_date))){isValid=false;test+='Startdate'}
     if ( postDataJson.end_date ===undefined|| Number.isNaN(parseInt(postDataJson.end_date))){isValid=false;test+='enddATE'}
     console.log(test,isValid)
+
     const parsedData = {
       name: postDataJson.name,
       capacity: Number(postDataJson.capacity),
