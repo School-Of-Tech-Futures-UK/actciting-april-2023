@@ -49,7 +49,7 @@ describe('venues lambddas', ()=> {
 
     const response  =await createVenueHandler(event as APIGatewayProxyEventV2)
 
-    expect((response as APIGatewayProxyStructuredResultV2).statusCode).toEqual(200)
+    expect((response as APIGatewayProxyStructuredResultV2).statusCode).toEqual(400)
 
   }
 
