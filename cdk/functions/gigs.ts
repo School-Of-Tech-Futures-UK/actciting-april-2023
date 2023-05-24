@@ -45,7 +45,7 @@ export const getGigsByVenue = async (request_id:number) => {
 
   try {
     const results = await connection.query(
-      'SELECT * FROM venue_requests WHERE venue_id = :request_id;',
+      'SELECT venue_requests.*, events.* FROM venue_requests JOIN events on venue_requests.event_id = events.event_id WHERE venue_requests.venue_id = :request_id ;',
       {request_id}
     )
   
