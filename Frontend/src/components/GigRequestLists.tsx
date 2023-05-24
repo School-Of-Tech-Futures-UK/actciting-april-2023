@@ -27,8 +27,8 @@ const ViewGigList = (props: ViewGigListProps) => {
                 {props.GigArray.length ?
                 <div className="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
                     {props.GigArray.map((Gig, index) => (
-                        <GigRequests key={Gig.request_id} request_id={Gig.request_id} venue_id={Gig.venue_id} artist={Gig.artist}
-                        artist_genre={Gig.artist_genre} date={Gig.date} approval_status={Gig.approval_status}/>
+                        <GigRequests key={Gig.request_id} request_id={Gig.request_id} venue_id={Gig.venue_id} artist_name={Gig.artist_name} 
+                        artist_genre={Gig.artist_genre} contact_email={Gig.contact_email} date={Gig.date} approval_status={Gig.approval_status}/>
                     ))}
                 </div> :
                 <div className="alert alert-danger alert-dismissible fade show my-4" role="alert">
