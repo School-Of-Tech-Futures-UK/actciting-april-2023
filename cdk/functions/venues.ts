@@ -5,7 +5,8 @@ import client = require('data-api-client')
 //   resourceArn: 'arn:aws:rds:eu-west-2:645438430936:cluster:actsent-stack-rdscluster9d572005-rf41aba7zoc9',
 //   database: 'dev'
 // })
-type VenueData = {
+export type VenueData = {
+  venueId: number,
   name: string,
   capacity: number,
   address: string,
