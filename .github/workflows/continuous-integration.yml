@@ -87,4 +87,4 @@ jobs:
 
     - name: npm lint
       working-directory: ./cdk/functions
-      run: npm lint
+      run: npm run lint
