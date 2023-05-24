@@ -45,7 +45,7 @@ jobs:
     
     - name: npm lint
       working-directory: ./Frontend
-      run: npm lint
+      run: npm run lint
   
   backend:
     runs-on: ubuntu-latest
