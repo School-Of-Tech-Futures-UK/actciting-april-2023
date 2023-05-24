@@ -6,8 +6,8 @@ export type ViewVenueItemProps = {
     geolocation: string,
     image: string,
     email: string,
-    startDate: number,
-    endDate: number
+    startDate: string,
+    endDate: string
 }
 
 const ViewVenueItem = (props: ViewVenueItemProps) => {
