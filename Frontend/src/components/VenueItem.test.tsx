@@ -5,20 +5,16 @@ import '@testing-library/jest-dom/extend-expect'
 
 import VenueItem from './VenueItem'
 
-// const venueItem = {
-//     venue_id: 1,
-//     name: 'Venue A',
-//     capacity: 10,
-//     address: 'Address 1',
-//     geolocation: '55.55, 55.55',
-//     image: 'https://exampleimage.com/image.jpg',
-//     email: 'email@test.com',
-//     start_date: 22022023,
-//     end_date: 23022023
-// }
-
 const venueItem = {
+    venue_id: 1,
     name: 'Venue A',
+    capacity: 10,
+    address: 'Address 1',
+    geolocation: '55.55, 55.55',
+    image: 'https://exampleimage.com/image.jpg',
+    email: 'email@test.com',
+    start_date: 22022023,
+    end_date: 23022023
 }
 
 describe('The Venue Item', () => {
