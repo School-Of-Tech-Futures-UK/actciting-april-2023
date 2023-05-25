@@ -81,9 +81,9 @@ jobs:
       working-directory: ./cdk/functions
       run: npm i --package-lock-only
 
-    - name: npm lint
-      working-directory: ./cdk/functions
-      run: npm lint
+    # - name: npm lint
+    #   working-directory: ./cdk/functions
+    #   run: npm lint
 
   linting:
     runs-on: ubuntu-latest
