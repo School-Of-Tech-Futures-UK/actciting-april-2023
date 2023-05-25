@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - '*'
-      # - '!main'
   pull_request:
     branches: [ main ]
 
@@ -81,10 +80,6 @@ jobs:
       working-directory: ./cdk/functions
       run: npm i --package-lock-only
 
-    # - name: npm lint
-    #   working-directory: ./cdk/functions
-    #   run: npm lint
-
   linting:
     runs-on: ubuntu-latest
 
@@ -102,15 +97,15 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+      
+    - name: npm ci
+      run: npm ci && npm ci --prefix Frontend
 
     - name: npm make package-lock if missing
-      # working-directory: ./cdk/fu
       run: npm i --package-lock-only
 
     - name: npm ci
-      # working-directory:
       run: npm ci
 
     - name: npm lint
-      # working-directory:
       run: npm run lint
