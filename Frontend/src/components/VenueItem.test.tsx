@@ -24,12 +24,12 @@ describe('The Venue Item', () => {
             email={venueItem.email} startDate={venueItem.start_date} endDate={venueItem.end_date}/>);
 
         const venueName = screen.getByText(/Venue A/);
-        // const venueCapacity = screen.getByText(/10/);
-        // const venueAddress = screen.getByText(/Address 1/);
-        // const venueImage = screen.getByAltText(/Venue A/);
-        // const venueEmail = screen.getByText(/email@test.com/);
-        // const venueStartDate = screen.getByText(/22022023/);
-        // const venueEndDate = screen.getByText(/23022023/);
+        const venueCapacity = screen.getByText(/10/);
+        const venueAddress = screen.getByText(/Address 1/);
+        const venueImage = screen.getByAltText(/Venue A/);
+        const venueEmail = screen.getByText(/email@test.com/);
+        const venueStartDate = screen.getByText(/22022023/);
+        const venueEndDate = screen.getByText(/23022023/);
 
         expect(venueName).toBeInTheDocument();
         // expect(venueCapacity).toBeInTheDocument();
