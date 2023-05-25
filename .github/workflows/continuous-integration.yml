@@ -104,7 +104,7 @@ jobs:
           ${{ runner.os }}-node-
 
     - name: npm make package-lock if missing
-      working-directory: ./cdk/functions
+      # working-directory: ./cdk/fu
       run: npm i --package-lock-only
 
     - name: npm ci
