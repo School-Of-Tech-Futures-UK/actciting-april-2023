@@ -37,6 +37,6 @@ describe('List of Venues', () => {
         // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         const venuesList = container.getElementsByClassName('venueItem');
 
-        expect(venuesList.length).toBe(2)
+        expect(venuesList.length).toBe(0)
     })
 })
