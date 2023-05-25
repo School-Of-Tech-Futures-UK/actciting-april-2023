@@ -31,7 +31,7 @@ describe('The Venue Item', () => {
         // const venueStartDate = screen.getByText(/22022023/);
         // const venueEndDate = screen.getByText(/23022023/);
 
-        expect(venueName).toBeInTheDocument(/Venue A/);
+        expect(venueName).toBeInTheDocument();
         // expect(venueCapacity).toBeInTheDocument();
         // expect(venueAddress).toBeInTheDocument();
         // expect(venueImage).toBeInTheDocument();
